@@ -47,7 +47,7 @@ ose-3-11-node2.lab.fp.f5net.com    ose-3-11-node2.lab.fp.f5net.com    192.168.20
 ## create net tunnels vxlan vxlan-mp flooding-type multipoint
 ```
 (tmos)# create net tunnels vxlan vxlan-mp flooding-type multipoint
-(tmos)# create net tunnels tunnel openshift_vxlan key 0 profile vxlan-mp local-address 192.168.200.91
+(tmos)# create net tunnels tunnel openshift_vxlan key 0 profile vxlan-mp local-address 192.168.200.82
 ```
 ## Add the BIG-IP device to the OpenShift overlay network
 ```
