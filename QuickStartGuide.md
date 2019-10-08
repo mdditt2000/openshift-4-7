@@ -8,7 +8,7 @@ Environment parameters
 
 * OCP 3.11 - one master and two worker nodes
 * CIS 1.11
-* AS3: 3.13.1
+* AS3: 3.13.2 LTS
 * HA BIG-IP 14.1 - flannel overlay using floats
 
 # OpenShift 3.11 Install
@@ -19,12 +19,29 @@ OCP is installed on RHEL 7.5 on ESXi using a mutli-nic deployment
 * ose-3-11-node1
 * ose-3-11-node2
 
-Innore----WORK IN PROGRESS
+## Prerequisite
 
-## Prerequisite 
+Since CIS is using the AS3 declarative API we need the AS3 extention installed on BIGIP. Follow the link to install AS3
  
 * Install AS3 on BIGIP
 https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/userguide/installation.html
+
+## Create a new OpenShift HostSubnet
+
+Create a host subnet for the BIPIP. This will provide the subnet for creting the tunnel self-IP
+
+```
+oc create -f f5-kctlr-openshift-hostsubnet-node01.yaml
+```
+```
+oc get hostsubnets
+NAME                              HOST                              HOST IP          SUBNET          EGRESS CIDRS   EGRESS IPS
+f5-server                         f5-server                         192.168.200.91   10.130.0.0/23   []             []
+ose3-11-master.lab.fp.f5net.com   ose3-11-master.lab.fp.f5net.com   192.168.200.70   10.128.0.0/23   []             []
+ose3-11-node1.lab.fp.f5net.com    ose3-11-node1.lab.fp.f5net.com    192.168.200.71   10.129.0.0/23   []             []
+```
+## Create a BIG-IP VXLAN tunnel
+
 
 ### AS3/CCCL arguments:
 
