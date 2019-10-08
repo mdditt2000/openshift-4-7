@@ -31,7 +31,7 @@ https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/usergui
 Create a host subnet for the BIPIP. This will provide the subnet for creting the tunnel self-IP
 
 ```
-oc create -f f5-kctlr-openshift-hostsubnet-node01.yaml
+oc create -f f5-kctlr-openshift-hostsubnet.yaml
 ```
 ```
 oc get hostsubnets
