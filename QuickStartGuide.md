@@ -34,14 +34,32 @@ Create a host subnet for the BIPIP. This will provide the subnet for creting the
 oc create -f f5-kctlr-openshift-hostsubnet.yaml
 ```
 ```
-oc get hostsubnets
-NAME                              HOST                              HOST IP          SUBNET          EGRESS CIDRS   EGRESS IPS
-f5-server                         f5-server                         192.168.200.91   10.130.0.0/23   []             []
-ose3-11-master.lab.fp.f5net.com   ose3-11-master.lab.fp.f5net.com   192.168.200.70   10.128.0.0/23   []             []
-ose3-11-node1.lab.fp.f5net.com    ose3-11-node1.lab.fp.f5net.com    192.168.200.71   10.129.0.0/23   []             []
+[root@ose-3-11-master openshift-3-11]# oc get hostsubnets
+NAME                               HOST                               HOST IP          SUBNET          EGRESS CIDRS   EGRESS IPS
+f5-server                          f5-server                          192.168.200.81   10.131.0.0/23   []             []
+ose-3-11-master.lab.fp.f5net.com   ose-3-11-master.lab.fp.f5net.com   192.168.200.84   10.128.0.0/23   []             []
+ose-3-11-node1.lab.fp.f5net.com    ose-3-11-node1.lab.fp.f5net.com    192.168.200.85   10.130.0.0/23   []             []
+ose-3-11-node2.lab.fp.f5net.com    ose-3-11-node2.lab.fp.f5net.com    192.168.200.86   10.129.0.0/23   []             []
+[root@ose-3-11-master openshift-3-11]#
 ```
 ## Create a BIG-IP VXLAN tunnel
 
+## create net tunnels vxlan vxlan-mp flooding-type multipoint
+```
+(tmos)# create net tunnels vxlan vxlan-mp flooding-type multipoint
+(tmos)# create net tunnels tunnel openshift_vxlan key 0 profile vxlan-mp local-address 192.168.200.91
+```
+## Add the BIG-IP device to the OpenShift overlay network
+```
+(tmos)# create net self 10.131.0.82/14 allow-service all vlan openshift_vxlan
+```
+Subnet comes from the creating the hostsubnets. Used 91 to be consisten with BigIP internal interface
+
+## Create a new partition on your BIG-IP system
+```
+(tmos)# create auth partition openshift
+```
+This needs to match the partition in the controller contiguration
 
 ### AS3/CCCL arguments:
 
