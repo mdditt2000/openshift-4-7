@@ -36,10 +36,10 @@ oc create -f f5-kctlr-openshift-hostsubnet.yaml
 ```
 [root@ose-3-11-master openshift-3-11]# oc get hostsubnets
 NAME                               HOST                               HOST IP          SUBNET          EGRESS CIDRS   EGRESS IPS
-f5-server                          f5-server                          192.168.200.81   10.131.0.0/23   []             []
-ose-3-11-master.example.com        ose-3-11-master.example.com   192.168.200.84        10.128.0.0/23   []             []
-ose-3-11-node1.example.com         ose-3-11-node1.example.com    192.168.200.85        10.130.0.0/23   []             []
-ose-3-11-node2.lexample.com        ose-3-11-node2.example.com    192.168.200.86        10.129.0.0/23   []             []
+f5-server                          f5-server                          192.168.200.81   10.131.0.0/23   []     []
+ose-3-11-master.example.com        ose-3-11-master.example.com        192.168.200.84   10.128.0.0/23   []     []
+ose-3-11-node1.example.com         ose-3-11-node1.example.com         192.168.200.85   10.130.0.0/23   []     []
+ose-3-11-node2.lexample.com        ose-3-11-node2.example.com         192.168.200.86   10.129.0.0/23   []     []
 ```
 ## Create a BIG-IP VXLAN tunnel
 
@@ -60,26 +60,35 @@ Subnet comes from the creating the hostsubnets. Used 91 to be consisten with Big
 ```
 This needs to match the partition in the controller contiguration
 
-## Create CIS Controller
+## Create CIS Controller, BIG-IP credentials and RBAC Authentication
 
-
-### AS3/CCCL arguments:
-
-Add argument in the CIS controller deployment to use “as3” path with OpenShift. If using a configmap with AS3 you dont need this aurgument
- ```
- --agent=as3
- ```
-To use “cccl” path then use the below argument
- ```
- --agent=cccl
 ```
-If you using BIGIP self-signed certs please add or schema validation will fail
- ```
- --insecure=true
+args: [
+        "--bigip-username=$(BIGIP_USERNAME)",
+        "--bigip-password=$(BIGIP_PASSWORD)",
+        # Replace with the IP address or hostname of your BIG-IP device
+        "--bigip-url=192.168.200.82",
+        # Replace with the name of the BIG-IP partition you want to manage
+        "--bigip-partition=openshift",
+        "--pool-member-type=cluster",
+        # Replace with the path to the BIG-IP VXLAN connected to the
+        # OpenShift HostSubnet
+        "--openshift-sdn-name=/Common/openshift_vxlan",
+        "--manage-routes=true",
+        "--namespace=f5demo",
+        "--route-vserver-addr=10.192.75.107",
+        "--log-level=DEBUG",
+        # Self-signed cert
+        "--insecure=true",
+        "--agent=as3"
+       ]
 ```
-Example folder https://github.com/mdditt2000/openshift/tree/dev/cis-1-11
-
-#Note: CCCL will be removed in the upcoming months. CCCL doesnt support BIG-IP v14.1
+```
+oc create secret generic bigip-login --namespace kube-system --from-literal=username=admin --from-literal=password=admin
+oc create serviceaccount bigip-ctlr -n kube-system
+oc create -f f5-kctlr-openshift-clusterrole.yaml
+oc create -f f5-k8s-bigip-ctlr-openshift.yaml
+```
 
 ## Notes
 
