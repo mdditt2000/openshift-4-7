@@ -88,6 +88,7 @@ oc create secret generic bigip-login --namespace kube-system --from-literal=user
 oc create serviceaccount bigip-ctlr -n kube-system
 oc create -f f5-kctlr-openshift-clusterrole.yaml
 oc create -f f5-k8s-bigip-ctlr-openshift.yaml
+oc adm policy add-cluster-role-to-user cluster-admin -z bigip-ctlr -n kube-system
 ```
 
 ## Notes
