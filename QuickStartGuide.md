@@ -84,7 +84,7 @@ args: [
        ]
 ```
 ```
-oc create secret generic bigip-login --namespace kube-system --from-literal=username=admin --from-literal=password=admin
+oc create secret generic bigip-login --namespace kube-system --from-literal=username=admin --from-literal=password=f5PME123
 oc create serviceaccount bigip-ctlr -n kube-system
 oc create -f f5-kctlr-openshift-clusterrole.yaml
 oc create -f f5-k8s-bigip-ctlr-openshift.yaml
@@ -108,7 +108,7 @@ The router name must not be router
 
 ## Create openshift BIGIP controller authentication and RBAC
 ```
-oc create secret generic bigip-login --namespace kube-system --from-literal=username=admin --from-literal=password=admin
+oc create secret generic bigip-login --namespace kube-system --from-literal=username=admin --from-literal=password=f5PME123
 oc create serviceaccount bigip-ctlr -n kube-system
 oc create -f f5-kctlr-openshift-clusterrole.yaml
 oc create -f f5-k8s-bigip-ctlr-openshift.yaml
