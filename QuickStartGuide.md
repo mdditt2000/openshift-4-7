@@ -8,8 +8,8 @@ Environment parameters
 
 * OCP 3.11 - one master and two worker nodes
 * CIS 1.11
-* AS3: 3.13.2 LTS
-* HA BIG-IP 14.1 - flannel overlay using floats
+* AS3: 3.13.1 LTS
+* BIG-IP 14.1
 
 # OpenShift 3.11 Install
 
@@ -98,9 +98,7 @@ New features in CIS 1.11
 * OpenShift WAF policy support
 ```
 virtual-server.f5.com/waf: /Common/WAF_Policy
-```
-Unable to use two different WAF Policy with two different routes (#110)
-Modification/Removal of WAF Policy annotation doesn't get reflected on BIG IP (#109) 
+``` 
 
 * Alternative backend, blue/green support using weight
 Look for the example f5-demo-app-route-ab
