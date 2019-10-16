@@ -99,6 +99,7 @@ New features in CIS 1.11
 ```
 virtual-server.f5.com/waf: /Common/WAF_Policy
 ``` 
+Note: Currently path / doesnt work. Please add a path such as /foo. Issue will be fixed in CIS 1.11.1
 
 * Alternative backend, blue/green support using weight
 Look for the example f5-demo-app-route-ab
