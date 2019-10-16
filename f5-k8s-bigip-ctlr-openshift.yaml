@@ -16,7 +16,7 @@
         serviceAccountName: bigip-ctlr
         containers:
           - name: k8s-bigip-ctlr
-            image: somanchit/k8s-bigip-ctlr:4.1-route-admit-status
+            image: f5networks/k8s-bigip-ctlr:1.11.0
             env:
               - name: BIGIP_USERNAME
                 valueFrom:
