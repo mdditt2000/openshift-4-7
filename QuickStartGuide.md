@@ -36,7 +36,7 @@ oc create -f f5-kctlr-openshift-hostsubnet.yaml
 ```
 [root@ose-3-11-master openshift-3-11]# oc get hostsubnets
 NAME                               HOST                               HOST IP          SUBNET          EGRESS CIDRS   EGRESS IPS
-f5-server                          f5-server                          192.168.200.81   10.131.0.0/23   []     []
+f5-server                          f5-server                          192.168.200.82   10.128.2.0/23   []     []
 ose-3-11-master.example.com        ose-3-11-master.example.com        192.168.200.84   10.128.0.0/23   []     []
 ose-3-11-node1.example.com         ose-3-11-node1.example.com         192.168.200.85   10.130.0.0/23   []     []
 ose-3-11-node2.lexample.com        ose-3-11-node2.example.com         192.168.200.86   10.129.0.0/23   []     []
@@ -50,9 +50,9 @@ ose-3-11-node2.lexample.com        ose-3-11-node2.example.com         192.168.20
 ```
 ## Add the BIG-IP device to the OpenShift overlay network
 ```
-(tmos)# create net self 10.131.0.82/14 allow-service all vlan openshift_vxlan
+(tmos)# create net self 10.128.2.82/14 allow-service all vlan openshift_vxlan
 ```
-Subnet comes from the creating the hostsubnets. Used 91 to be consisten with BigIP internal interface
+Subnet comes from the creating the hostsubnets. Used .82 to be consisten with BigIP internal interface
 
 ## Create a new partition on your BIG-IP system
 ```
