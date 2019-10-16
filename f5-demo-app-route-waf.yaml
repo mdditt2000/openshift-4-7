@@ -8,6 +8,7 @@
     annotations:
       # annotations
       # health monitoring
+      # Please add a path for the waf policy until fixed
       virtual-server.f5.com/waf: /Common/WAF_Policy
       virtual-server.f5.com/health: |
         [
@@ -20,7 +21,7 @@
         ]
   spec:
     host: mysite.f5demo.com
-    path: "/"
+    path: "/foo"
     port:
       targetPort: 8080
     to:
