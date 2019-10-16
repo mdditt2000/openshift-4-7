@@ -10,4 +10,4 @@ host: f5-server
 # The hostIP address will be the BIG-IP interface address routable to the
 # OpenShift Origin nodes.
 # This address is the BIG-IP VTEP in the SDN's VXLAN.
-hostIP: 192.168.200.81
+hostIP: 192.168.200.82
