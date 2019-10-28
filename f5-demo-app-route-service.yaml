@@ -93,3 +93,19 @@ spec:
             targetPort: 8080
     selector:
         app: f5-demo-app-route-waf
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: f5-demo-app-route-edge-ssl-waf
+    labels:
+        name: f5-demo-app-route-edge-ssl-waf
+    namespace: f5demo
+spec:
+    type: ClusterIP
+    ports:
+        -
+            port: 8080
+            targetPort: 8080
+    selector:
+        app: f5-demo-app-route-edge-ssl-waf
