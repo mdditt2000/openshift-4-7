@@ -1,6 +1,6 @@
-# OpenShift 3.11 and Container Ingress Controler Quick Start Guide
+# OpenShift 3.11 and Container Ingress Controller Quick Start Guide
 
-This page is created to document OCP 3.11 with intergration of CIS and BIGIP. Please open issues on my github page on contact me at m.dittmer@f5.com
+This page is created to document OCP 3.11 with integration of CIS and BIGIP. Please open issues on my github page on contact me at m.dittmer@f5.com
 
 # Note
 
@@ -13,7 +13,7 @@ Environment parameters
 
 # OpenShift 3.11 Install
 
-OCP is installed on RHEL 7.5 on ESXi using a mutli-nic deployment
+OCP is installed on RHEL 7.5 on ESXi
 
 * ose-3-11-master  
 * ose-3-11-node1
@@ -21,14 +21,14 @@ OCP is installed on RHEL 7.5 on ESXi using a mutli-nic deployment
 
 ## Prerequisite
 
-Since CIS is using the AS3 declarative API we need the AS3 extention installed on BIGIP. Follow the link to install AS3
+Since CIS is using the AS3 declarative API we need the AS3 extension installed on BIGIP. Follow the link to install AS3
  
 * Install AS3 on BIGIP
 https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/userguide/installation.html
 
 ## Create a new OpenShift HostSubnet
 
-Create a host subnet for the BIPIP. This will provide the subnet for creting the tunnel self-IP
+Create a host subnet for the BIPIP. This will provide the subnet for creating the tunnel self-IP
 
 ```
 oc create -f f5-kctlr-openshift-hostsubnet.yaml
@@ -52,13 +52,13 @@ ose-3-11-node2.lexample.com        ose-3-11-node2.example.com         192.168.20
 ```
 (tmos)# create net self 10.128.2.82/14 allow-service all vlan openshift_vxlan
 ```
-Subnet comes from the creating the hostsubnets. Used .82 to be consisten with BigIP internal interface
+Subnet comes from the creating the hostsubnets. Used .82 to be consistent with BigIP internal interface
 
 ## Create a new partition on your BIG-IP system
 ```
 (tmos)# create auth partition openshift
 ```
-This needs to match the partition in the controller contiguration
+This needs to match the partition in the controller configuration
 
 ## Create CIS Controller, BIG-IP credentials and RBAC Authentication
 
@@ -99,7 +99,7 @@ New features in CIS 1.11
 ```
 virtual-server.f5.com/waf: /Common/WAF_Policy
 ``` 
-Note: Currently path / doesnt work. Please add a path such as /foo. Issue will be fixed in CIS 1.11.1
+Note: Currently path / doesn't work. Please add a path such as /foo. Issue will be fixed in CIS 1.11.1
 
 * Alternative backend, blue/green support using weight
 Look for the example f5-demo-app-route-ab
@@ -146,4 +146,9 @@ oc delete -f f5-demo-app-route-reencrypt-ssl.yaml -n f5demo
 oc delete -f f5-demo-app-route-passthrough-ssl.yaml -n f5demo
 oc delete -f f5-demo-app-route-waf.yaml -n f5demo
 oc delete -f f5-demo-app-route-ab.yaml -n f5demo
+``` 
+## Enable logging for AS3
+```
+oc get pod -n kube-system
+oc log -f f5-server-### -n kube-system | grep -i 'as3'
 ```
