@@ -90,30 +90,6 @@ oc create -f f5-kctlr-openshift-clusterrole.yaml
 oc create -f f5-k8s-bigip-ctlr-openshift.yaml
 oc adm policy add-cluster-role-to-user cluster-admin -z bigip-ctlr -n kube-system
 ```
-
-## Notes
-
-New features in CIS 1.11
-
-* OpenShift WAF policy support
-```
-virtual-server.f5.com/waf: /Common/WAF_Policy
-``` 
-Note: Currently path / doesn't work. Please add a path such as /foo. Issue will be fixed in CIS 1.11.1
-
-* Alternative backend, blue/green support using weight
-Look for the example f5-demo-app-route-ab
-
-* Route status update in OpenShift Dashboard
-The router name must not be router
-
-## Create openshift BIGIP controller authentication and RBAC
-```
-oc create secret generic bigip-login --namespace kube-system --from-literal=username=admin --from-literal=password=f5PME123
-oc create serviceaccount bigip-ctlr -n kube-system
-oc create -f f5-kctlr-openshift-clusterrole.yaml
-oc create -f f5-k8s-bigip-ctlr-openshift.yaml
-```
 ## Delete kubernetes bigip container connecter, authentication and RBAC
 ```
 oc delete serviceaccount bigip-ctlr -n kube-system
