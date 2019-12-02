@@ -16,7 +16,7 @@
         serviceAccountName: bigip-ctlr
         containers:
           - name: k8s-bigip-ctlr
-            image: somanchit/k8s-bigip-ctlr:1.11.1_build_6
+            image: snatra27/k8s-bigip-ctlr:rel12_build_12
             env:
               - name: BIGIP_USERNAME
                 valueFrom:
