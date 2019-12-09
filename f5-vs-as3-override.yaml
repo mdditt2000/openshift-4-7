@@ -19,7 +19,7 @@ data:
                 }
               ]
             },
-        	  "ose_vserver": {
+            "ose_vserver": {
               "securityLogProfiles": [
                 {
                   "bigip": "/Common/Log all requests"
