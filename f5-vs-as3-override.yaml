@@ -1,0 +1,31 @@
+# Generated using the following command:
+# ock create configmap f5-route-vs-override --from-file override.json
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: f5-route-vs-override
+  namespace: kube-system
+data:
+  override.json: |
+    {
+      "declaration": {
+        "test_AS3": {
+          "Shared": {
+            "https_ose_vserver": {
+              "persistenceMethods": [],
+              "virtualAddresses": [
+                "172.16.3.100"
+              ],
+              "profileHTTP": {
+                "bigip": "/Common/http"
+              },
+              "profileTCP": {
+                "bigip": "/Common/tcp"
+              }
+            }
+          }
+        }
+      }
+    }
+

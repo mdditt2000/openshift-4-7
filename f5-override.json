@@ -1,0 +1,20 @@
+{
+  "declaration": {
+    "test_AS3": {
+      "Shared": {
+        "https_ose_vserver": {
+          "persistenceMethods": [],
+          "virtualAddresses": [
+            "172.16.3.100"
+          ],
+          "profileHTTP": {
+            "bigip": "/Common/http"
+          },
+          "profileTCP": {
+            "bigip": "/Common/tcp"
+          }
+        }
+      }
+    }
+  }
+}
