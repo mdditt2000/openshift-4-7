@@ -8,25 +8,21 @@ metadata:
   namespace: f5demo
 data:
   override.json: |
-    {
-      "declaration": {
-        "openshift_AS3": {
-          "Shared": {
-            "https_ose_vserver": {
-              "securityLogProfiles": [
-                {
-                  "bigip": "/Common/Log all requests"
-                }
-              ]
-            },
-            "ose_vserver": {
-              "securityLogProfiles": [
-                {
-                  "bigip": "/Common/Log all requests"
-                }
-              ]
-            }
+  {
+    "declaration": {
+      "openshift_AS3": {
+        "Shared": {
+          "https_ose_vserver": {
+            "securityLogProfiles": [{
+              "bigip": "/Common/Log all requests"
+            }]
+          },
+          "ose_vserver": {
+            "securityLogProfiles": [{
+              "bigip": "/Common/Log all requests"
+            }]
           }
         }
       }
     }
+  }
