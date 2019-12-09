@@ -16,7 +16,7 @@
         serviceAccountName: bigip-ctlr
         containers:
           - name: k8s-bigip-ctlr
-            image: f5networks/k8s-bigip-ctlr:1.11.1
+            image: amit49g/k8s-bigip-ctlr:rel12_build_14
             env:
               - name: BIGIP_USERNAME
                 valueFrom:
@@ -47,7 +47,12 @@
               "--manage-routes=true",
               "--namespace=f5demo",
               "--route-vserver-addr=10.192.75.107",
+              # Logging level
               "--log-level=DEBUG",
+              "--log-as3-response=true",
+              # AS3 override functionality
+              "--override-as3-declaration=f5demo/f5-route-vs-override",
+              # Self-signed cert
               "--insecure=true",
               "--agent=as3"
               ]
