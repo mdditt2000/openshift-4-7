@@ -17,16 +17,16 @@ data:
                 {
                   "bigip": "/Common/Log all requests"
                 }
-              ],
-              "profileHTTP": {
-                "bigip": "/Common/http"
-              },
-              "profileTCP": {
-                "bigip": "/Common/tcp"
-              }
+              ]
+            },
+        	  "ose_vserver": {
+              "securityLogProfiles": [
+                {
+                  "bigip": "/Common/Log all requests"
+                }
+              ]
             }
           }
         }
       }
     }
-
