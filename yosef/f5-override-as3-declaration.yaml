@@ -18,14 +18,12 @@ data:
               },
               "securityLogProfiles": [
                 {
-                  "bigip": "/Common/PROF_LOG_ASM_ALL_BOT_ALL_DOS_ALL"
+                  "bigip": "/Common/Log all requests"
                 }
               ],
-              "SNATPool": [
-                {
-                  "bigip": "/Common/RD_000_SNATPOOL_GENERIC"
-                }
-              ]
+              "snat": {
+                "bigip": "/Common/RD_000_SNATPOOL_GENERIC"
+              }
             }
           }
         }
