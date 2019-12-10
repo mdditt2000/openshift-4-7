@@ -1,18 +1,25 @@
 {
   "declaration": {
-    "test_AS3": {
+    "openshift_AS3": {
       "Shared": {
         "https_ose_vserver": {
-          "persistenceMethods": [],
-          "virtualAddresses": [
-            "172.16.3.100"
+          "securityLogProfiles": [
+            {
+              "bigip": "/Common/Log all requests"
+            }
+          ]
+        },
+        "ose_vserver": {
+          "securityLogProfiles": [
+            {
+              "bigip": "/Common/Log all requests"
+            }
           ],
-          "profileHTTP": {
-            "bigip": "/Common/http"
-          },
-          "profileTCP": {
-            "bigip": "/Common/tcp"
-          }
+          "SNATPool": [
+            {
+              "bigip": "/Common/RD_000_SNATPOOL_GENERIC"
+            }
+          ]
         }
       }
     }
