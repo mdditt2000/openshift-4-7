@@ -7,26 +7,29 @@ metadata:
   name: f5-route-vs-override
   namespace: f5demo
 data:
-    template: |
-      {
-        "declaration": {
-          "openshift_AS3": {
-            "Shared": {
-              "https_ose_vserver": {
-                "securityLogProfiles": [
-                  {
-                    "bigip": "/Common/Log all requests"
-                  }
-                ]
-              },
-              "ose_vserver": {
-                "securityLogProfiles": [
-                  {
-                    "bigip": "/Common/Log all requests"
-                  }
-                ]
+  template: |
+    {
+      "declaration": {
+        "openshift_AS3": {
+          "Shared": {
+            "https_ose_vserver": {
+              "securityLogProfiles": [
+                {
+                  "bigip": "/Common/Log all requests"
+                }
+              ]
+            },
+            "ose_vserver": {
+              "securityLogProfiles": [
+                {
+                  "bigip": "/Common/Log all requests"
+                }
+              ],
+              "iRule": {
+                "bigip": "/Common/https_redirect"
               }
             }
           }
         }
       }
+    }
