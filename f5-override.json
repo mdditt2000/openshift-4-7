@@ -2,24 +2,16 @@
   "declaration": {
     "openshift_AS3": {
       "Shared": {
-        "https_ose_vserver": {
-          "securityLogProfiles": [
-            {
-              "bigip": "/Common/Log all requests"
-            }
-          ]
-        },
+        "https_ose_vserver": {},
         "ose_vserver": {
           "securityLogProfiles": [
             {
               "bigip": "/Common/Log all requests"
             }
           ],
-          "SNATPool": [
-            {
-              "bigip": "/Common/RD_000_SNATPOOL_GENERIC"
-            }
-          ]
+          "snat": {
+            "bigip": "/Common/RD_000_SNATPOOL_GENERIC"
+          }
         }
       }
     }

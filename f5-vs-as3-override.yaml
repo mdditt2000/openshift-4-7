@@ -7,26 +7,23 @@ metadata:
   name: f5-route-vs-override
   namespace: f5demo
 data:
-  template: |
-    {
-      "declaration": {
-        "openshift_AS3": {
-          "Shared": {
-            "https_ose_vserver": {
-            },
-            "ose_vserver": {
-              "securityLogProfiles": [
-                {
-                  "bigip": "/Common/Log all requests"
-                }
-              ],
-              "SNATPool": [
-                {
+    template: |
+      {
+        "declaration": {
+          "openshift_AS3": {
+            "Shared": {
+              "https_ose_vserver": {},
+              "ose_vserver": {
+                "securityLogProfiles": [
+                  {
+                    "bigip": "/Common/Log all requests"
+                  }
+                ],
+                "snat": {
                   "bigip": "/Common/RD_000_SNATPOOL_GENERIC"
                 }
-              ]
+              }
             }
           }
         }
       }
-    }
