@@ -10,18 +10,18 @@ data:
         "appaotel1_AS3": {
           "Shared": {
             "RD_000_VS_STD_APPAOTEL1_443": {
-                        "profileHTTP": {
-            "bigip": "/Common/http"
-          },
-          "profileTCP": {
-            "bigip": "/Common/tcp"
-          },
+              "profileHTTP": {
+                "bigip": "/Common/http"
+              },
+              "profileTCP": {
+                "bigip": "/Common/tcp"
+              },
               "securityLogProfiles": [
                 {
                   "bigip": "/Common/PROF_LOG_ASM_ALL_BOT_ALL_DOS_ALL"
                 }
               ],
-              "snatpool": [
+              "SNATPool": [
                 {
                   "bigip": "/Common/RD_000_SNATPOOL_GENERIC"
                 }
