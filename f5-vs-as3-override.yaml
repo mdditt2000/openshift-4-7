@@ -25,8 +25,8 @@ data:
                   "bigip": "/Common/Log all requests"
                 }
               ],
-              "snat": {
-                  "bigip": "/Common/RD_000_SNATPOOL_GENERIC"
+              "iRule": {
+                  "bigip": "/Common/_sys_https_redirect"
               }
             }
           }
