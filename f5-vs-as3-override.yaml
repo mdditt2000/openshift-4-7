@@ -25,7 +25,7 @@ data:
                   "bigip": "/Common/Log all requests"
                 }
               ],
-              "iRule": {
+              "iRules": {
                   "bigip": "/Common/_sys_https_redirect"
               }
             }
