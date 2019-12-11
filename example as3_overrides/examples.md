@@ -37,3 +37,4 @@ This example is used to log all request. Good for WAF
 "snat": {
    "bigip": "/Common/SNATPOOL"
  }
+ ```
