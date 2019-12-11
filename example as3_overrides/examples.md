@@ -1,6 +1,7 @@
-# Generated using the following command:
-# ock create configmap f5-route-vs-override --from-file override.json
+# AS3 Override examples 
 
+This example is used to log all request. Good for WAF
+```
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -30,3 +31,9 @@ data:
         }
       }
     }
+```
+This example is used to log all request. Good for WAF
+```
+"snat": {
+   "bigip": "/Common/SNATPOOL"
+ }

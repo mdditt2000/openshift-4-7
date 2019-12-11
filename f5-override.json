@@ -14,11 +14,6 @@
             {
               "bigip": "/Common/Log all requests"
             }
-          ],
-          "iRule": [
-            {
-              "bigip": "/Common/https_redirect"
-            }
           ]
         }
       }
