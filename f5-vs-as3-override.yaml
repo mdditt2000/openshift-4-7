@@ -24,7 +24,10 @@ data:
                 {
                   "bigip": "/Common/Log all requests"
                 }
-              ]
+              ],
+              "snat": {
+                  "bigip": "/Common/RD_000_SNATPOOL_GENERIC"
+              }
             }
           }
         }

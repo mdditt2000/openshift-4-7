@@ -32,7 +32,7 @@ data:
       }
     }
 ```
-This example is used to log all request. Good for WAF
+This example is used to add an existing SNATPOOL to the virtual
 ```
 "snat": {
    "bigip": "/Common/SNATPOOL"
