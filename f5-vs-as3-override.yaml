@@ -26,8 +26,8 @@ data:
                 }
               ],
               "iRules": {
-                  "bigip": "/Common/_sys_https_redirect"
-              }
+                  "bigip": "/Common/mptcp-mobile-optimized"
+              }       
             }
           }
         }
