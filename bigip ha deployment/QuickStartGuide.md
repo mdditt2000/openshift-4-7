@@ -28,25 +28,43 @@ https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/usergui
 
 ## Step 1: Create a new OpenShift HostSubnet
 
-Create one HostSubnet for each BIG-IP device. These will handle health monitor traffic. Also create one HostSubnet to pass data traffic using floating IP address
+Create one HostSubnet for each BIG-IP device. These will handle health monitor traffic. Also create one HostSubnet to pass data traffic using floating IP address. **Note** all files can be located under the bigip ha deployment folder. Recommend cloning this folder and making the modifications
 
 ```
-f5-kctlr-openshift-hostsubnet-ose-bigip-01.yaml
+oc create -f f5-kctlr-openshift-hostsubnet-ose-bigip-01.yaml
+oc create -f f5-kctlr-openshift-hostsubnet-ose-bigip-02.yaml
+oc create -f f5-kctlr-openshift-hostsubnet-float.yaml
 ```
 ```
-[root@ose-3-11-master openshift-3-11]# oc get hostsubnets
+[root@ose-3-11-master bigip ha deployment]# oc get hostsubnets
 NAME                               HOST                               HOST IP          SUBNET          EGRESS CIDRS   EGRESS IPS
-f5-server                          f5-server                          192.168.200.82   10.128.2.0/23   []     []
-ose-3-11-master.example.com        ose-3-11-master.example.com        192.168.200.84   10.128.0.0/23   []     []
-ose-3-11-node1.example.com         ose-3-11-node1.example.com         192.168.200.85   10.130.0.0/23   []     []
-ose-3-11-node2.lexample.com        ose-3-11-node2.example.com         192.168.200.86   10.129.0.0/23   []     []
+f5-ose-bigip-01                    f5-ose-bigip-01                    192.168.200.82   10.131.0.0/23   []             []
+f5-ose-bigip-02                    f5-ose-bigip-02                    192.168.200.83   10.128.2.0/23   []             []
+f5-ose-float                       f5-ose-float                       192.168.200.81   10.129.2.0/23   []             []
+ose-3-11-master.lab.fp.f5net.com   ose-3-11-master.example.com        192.168.200.84   10.128.0.0/23   []             []
+ose-3-11-node1.lab.fp.f5net.com    ose-3-11-node1.example.com         192.168.200.85   10.130.0.0/23   []             []
+ose-3-11-node2.lab.fp.f5net.com    ose-3-11-node2.example.com         192.168.200.86   10.129.0.0/23   []             []
 ```
-## Create a BIG-IP VXLAN tunnel
+## Step 2: Create a VXLAN profile
 
-## create net tunnels vxlan vxlan-mp flooding-type multipoint
+Create a VXLAN profile that uses multi-cast flooding on each BIGIP
 ```
-(tmos)# create net tunnels vxlan vxlan-mp flooding-type multipoint
-(tmos)# create net tunnels tunnel openshift_vxlan key 0 profile vxlan-mp local-address 192.168.200.82
+create /net tunnels vxlan openshift_vxlan flooding-type multipoint
+```
+## Step 3: Create a VXLAN tunnel
+
+Set the key to 0 to grant the BIG-IP device access to all OpenShift projects and subnets
+
+```
+on ose-bigip-01 create the VXLAN tunnel
+create /net tunnels tunnel openshift_vxlan key 0 profile openshift_vxlan local-address 192.168.200.81 secondary-address 192.168.200.82 traffic-group traffic-group-1
+```
+```
+On ose-bigip-02 create the VXLAN tunnel
+create /net tunnels tunnel openshift_vxlan key 0 profile openshift_vxlan local-address 192.168.200.81 secondary-address 192.168.200.83 traffic-group traffic-group-1
+```
+
+
 ```
 ## Add the BIG-IP device to the OpenShift overlay network
 ```
