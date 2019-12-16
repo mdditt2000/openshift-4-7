@@ -24,10 +24,7 @@ data:
                 {
                   "bigip": "/Common/Log all requests"
                 }
-              ],
-              "iRules": {
-                  "bigip": "/Common/mptcp-mobile-optimized"
-              }       
+              ]
             }
           }
         }

@@ -38,3 +38,9 @@ This example is used to add an existing SNATPOOL to the virtual
    "bigip": "/Common/SNATPOOL"
  }
  ```
+ This example is used to add an existing irule to the virtual **Testing**
+```
+"iRule": {
+   "bigip": "/Common/mptcp-mobile-optimized"
+  } 
+ ```
