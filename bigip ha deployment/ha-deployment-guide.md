@@ -49,7 +49,7 @@ ose-3-11-node2.lab.fp.f5net.com    ose-3-11-node2.example.com         192.168.20
 
 Create a VXLAN profile that uses multi-cast flooding on each BIGIP
 ```
-create /net tunnels vxlan openshift_vxlan flooding-type multipoint
+(tmos)# create /net tunnels vxlan openshift_vxlan flooding-type multipoint
 ```
 ## Step 3: Create a VXLAN tunnel
 
@@ -57,26 +57,42 @@ Set the key to 0 to grant the BIG-IP device access to all OpenShift projects and
 
 ```
 on ose-bigip-01 create the VXLAN tunnel
-create /net tunnels tunnel openshift_vxlan key 0 profile openshift_vxlan local-address 192.168.200.81 secondary-address 192.168.200.82 traffic-group traffic-group-1
+(tmos)# create /net tunnels tunnel openshift_vxlan key 0 profile openshift_vxlan local-address 192.168.200.81 secondary-address 192.168.200.82 traffic-group traffic-group-1
 ```
 ```
 On ose-bigip-02 create the VXLAN tunnel
-create /net tunnels tunnel openshift_vxlan key 0 profile openshift_vxlan local-address 192.168.200.81 secondary-address 192.168.200.83 traffic-group traffic-group-1
+(tmos)# create /net tunnels tunnel openshift_vxlan key 0 profile openshift_vxlan local-address 192.168.200.81 secondary-address 192.168.200.83 traffic-group traffic-group-1
+```
+## Step 4: Create a self IP in the VXLAN
+
+Create a self IP address in the VXLAN on each device. The subnet mask you assign to the self IP must match the one that the OpenShift SDN assigns to nodes. **Note** that is a /14 by default. Be sure to specify a floating traffic group (for example, traffic-group-1). Otherwise, the self IP will use the BIG-IP system’s default
+
+```
+[root@ose-3-11-master bigip ha deployment]# oc get hostsubnets
+NAME                               HOST                               HOST IP          SUBNET          EGRESS CIDRS   EGRESS IPS
+f5-ose-bigip-01                    f5-ose-bigip-01                    192.168.200.82   10.131.0.0/23   []             []
+f5-ose-bigip-02                    f5-ose-bigip-02                    192.168.200.83   10.128.2.0/23   []             []
+f5-ose-float                       f5-ose-float                       192.168.200.81   10.129.2.0/23   []             []
+```
+```
+on ose-bigip-01 create the self IP
+(tmos)# create /net self 10.131.0.82/14 allow-service none vlan openshift_vxlan
+```
+```
+on ose-bigip-02 create the self IP
+(tmos)# create /net self 10.128.2.83/14 allow-service none vlan openshift_vxlan
+```
+```
+On the active BIGIP, create a floating IP address in the subnet assigned by the OpenShift SDN.
+(tmos)# create /net self 10.129.2.81/14 allow-service none traffic-group traffic-group-1 vlan openshift_vxlan
 ```
 
-
-```
-## Add the BIG-IP device to the OpenShift overlay network
-```
-(tmos)# create net self 10.128.2.82/14 allow-service all vlan openshift_vxlan
-```
-Subnet comes from the creating the hostsubnets. Used .82 to be consistent with BigIP internal interface
+## Step 5: Create a new partition on your BIG-IP system
 
 ## Create a new partition on your BIG-IP system
 ```
 (tmos)# create auth partition openshift
 ```
-This needs to match the partition in the controller configuration
 
 ## Create CIS Controller, BIG-IP credentials and RBAC Authentication
 
