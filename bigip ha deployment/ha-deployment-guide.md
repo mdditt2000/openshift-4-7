@@ -74,27 +74,27 @@ f5-ose-bigip-01                    f5-ose-bigip-01                    192.168.20
 f5-ose-bigip-02                    f5-ose-bigip-02                    192.168.200.83   10.128.2.0/23   []             []
 f5-ose-float                       f5-ose-float                       192.168.200.81   10.129.2.0/23   []             []
 ```
+On ose-bigip-01 create the self IP
 ```
-on ose-bigip-01 create the self IP
 (tmos)# create /net self 10.131.0.82/14 allow-service none vlan openshift_vxlan
 ```
+On ose-bigip-02 create the self IP
 ```
-on ose-bigip-02 create the self IP
 (tmos)# create /net self 10.128.2.83/14 allow-service none vlan openshift_vxlan
 ```
+On the active BIGIP, create a floating IP address in the subnet assigned by the OpenShift SDN
 ```
-On the active BIGIP, create a floating IP address in the subnet assigned by the OpenShift SDN.
 (tmos)# create /net self 10.129.2.81/14 allow-service none traffic-group traffic-group-1 vlan openshift_vxlan
 ```
-
 ## Step 5: Create a new partition on your BIG-IP system
 
-## Create a new partition on your BIG-IP system
+Create a new partition on your BIG-IP system
 ```
 (tmos)# create auth partition openshift
 ```
-
 ## Create CIS Controller, BIG-IP credentials and RBAC Authentication
+
+Deploy both ose-bigip-01 and ose-bigip-02 controller for the associated BIGIPs. Example below from oc delete ose-bigip-01
 
 ```
 args: [
@@ -111,7 +111,11 @@ args: [
         "--manage-routes=true",
         "--namespace=f5demo",
         "--route-vserver-addr=10.192.75.107",
+        # Logging level
         "--log-level=DEBUG",
+        "--log-as3-response=true",
+        # AS3 override functionality
+        "--override-as3-declaration=f5demo/f5-route-vs-override",
         # Self-signed cert
         "--insecure=true",
         "--agent=as3"
@@ -121,14 +125,16 @@ args: [
 oc create secret generic bigip-login --namespace kube-system --from-literal=username=admin --from-literal=password=f5PME123
 oc create serviceaccount bigip-ctlr -n kube-system
 oc create -f f5-kctlr-openshift-clusterrole.yaml
-oc create -f f5-k8s-bigip-ctlr-openshift.yaml
+oc create -f f5-k8s-bigip-ctlr-openshift-ose-bigip-01.yaml
+oc create -f f5-k8s-bigip-ctlr-openshift-ose-bigip-02.yaml
 oc adm policy add-cluster-role-to-user cluster-admin -z bigip-ctlr -n kube-system
 ```
 ## Delete kubernetes bigip container connecter, authentication and RBAC
 ```
 oc delete serviceaccount bigip-ctlr -n kube-system
 oc delete -f f5-kctlr-openshift-clusterrole.yaml
-oc delete -f f5-k8s-bigip-ctlr-openshift.yaml
+oc delete -f f5-k8s-bigip-ctlr-openshift-ose-bigip-01.yaml
+oc delete -f f5-k8s-bigip-ctlr-openshift-ose-bigip-02.yaml
 oc delete secret bigip-login -n kube-system
 ```
 ## Create container f5-demo-app-route
