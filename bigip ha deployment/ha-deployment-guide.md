@@ -49,7 +49,8 @@ ose-3-11-node2.lab.fp.f5net.com    ose-3-11-node2.example.com         192.168.20
 
 Create a VXLAN profile that uses multi-cast flooding on each BIGIP
 ```
-(tmos)# create /net tunnels vxlan openshift_vxlan flooding-type multipoint
+(tmos)# create net tunnels vxlan vxlan-mp flooding-type multipoint
+
 ```
 ## Step 3: Create a VXLAN tunnel
 
@@ -57,11 +58,11 @@ Set the key to 0 to grant the BIG-IP device access to all OpenShift projects and
 
 ```
 on ose-bigip-01 create the VXLAN tunnel
-(tmos)# create /net tunnels tunnel openshift_vxlan key 0 profile openshift_vxlan local-address 192.168.200.81 secondary-address 192.168.200.82 traffic-group traffic-group-1
+(tmos)# create /net tunnels tunnel openshift_vxlan key 0 profile vxlan-mp local-address 192.168.200.81 secondary-address 192.168.200.82 traffic-group traffic-group-1
 ```
 ```
 On ose-bigip-02 create the VXLAN tunnel
-(tmos)# create /net tunnels tunnel openshift_vxlan key 0 profile openshift_vxlan local-address 192.168.200.81 secondary-address 192.168.200.83 traffic-group traffic-group-1
+(tmos)# create /net tunnels tunnel openshift_vxlan key 0 profile vxlan-mp local-address 192.168.200.81 secondary-address 192.168.200.83 traffic-group traffic-group-1
 ```
 ## Step 4: Create a self IP in the VXLAN
 

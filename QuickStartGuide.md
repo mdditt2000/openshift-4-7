@@ -7,8 +7,8 @@ This page is created to document OCP 3.11 with integration of CIS and BIGIP. Ple
 Environment parameters
 
 * OCP 3.11 - one master and two worker nodes
-* CIS 1.11.1
-* AS3: 3.13.1 LTS
+* CIS 1.12
+* AS3: 3.16
 * BIG-IP 14.1
 
 # OpenShift 3.11 Install
