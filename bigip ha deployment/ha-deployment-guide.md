@@ -77,15 +77,15 @@ f5-ose-float                       f5-ose-float                       192.168.20
 ```
 On ose-bigip-01 create the self IP
 ```
-(tmos)# create /net self 10.131.0.82/14 allow-service none vlan openshift_vxlan
+(tmos)# create /net self 10.131.0.82/14 allow-service default vlan openshift_vxlan
 ```
 On ose-bigip-02 create the self IP
 ```
-(tmos)# create /net self 10.128.2.83/14 allow-service none vlan openshift_vxlan
+(tmos)# create /net self 10.128.2.83/14 allow-service default vlan openshift_vxlan
 ```
 On the active BIGIP, create a floating IP address in the subnet assigned by the OpenShift SDN
 ```
-(tmos)# create /net self 10.129.2.81/14 allow-service none traffic-group traffic-group-1 vlan openshift_vxlan
+(tmos)# create /net self 10.129.2.81/14 allow-service default traffic-group traffic-group-1 vlan openshift_vxlan
 ```
 ## Step 5: Create a new partition on your BIG-IP system
 
