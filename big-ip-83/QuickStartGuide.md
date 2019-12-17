@@ -52,7 +52,7 @@ ose-3-11-node2.lexample.com        ose-3-11-node2.example.com         192.168.20
 ```
 (tmos)# create net self 10.131.0.83/14 allow-service all vlan openshift_vxlan
 ```
-Subnet comes from the creating the hostsubnets. Used .82 to be consistent with BigIP internal interface
+Subnet comes from the creating the hostsubnets. Used .83 to be consistent with BigIP internal interface
 
 ## Create a new partition on your BIG-IP system
 ```
