@@ -49,7 +49,7 @@ ose-3-11-node2.lab.fp.f5net.com    ose-3-11-node2.example.com         192.168.20
 
 Create a VXLAN profile that uses multi-cast flooding on each BIGIP
 ```
-(tmos)# create net tunnels vxlan vxlan-mp flooding-type multipoint
+(tmos)# create net tunnels vxlan openshift_vxlan flooding-type multipoint
 
 ```
 ## Step 3: Create a VXLAN tunnel
