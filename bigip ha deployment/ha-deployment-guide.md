@@ -108,7 +108,7 @@ args: [
         "--pool-member-type=cluster",
         # Replace with the path to the BIG-IP VXLAN connected to the
         # OpenShift HostSubnet
-        "--openshift-sdn-name=/Common/openshift_vxlan",
+        "--openshift-sdn-name=/Common/vxlan-mp",
         "--manage-routes=true",
         "--namespace=f5demo",
         "--route-vserver-addr=10.192.75.107",
