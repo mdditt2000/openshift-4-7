@@ -2,8 +2,8 @@
   kind: Route
   metadata:
     labels:
-      name: f5-demo-app-route-ab
-    name: f5-demo-app-route-ab
+      name: f5-demo-app-route-blue-green
+    name: f5-demo-app-route-blue-green
     namespace: f5demo
   spec:
     host: mysite.f5demo.com
