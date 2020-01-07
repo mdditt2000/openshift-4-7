@@ -12,9 +12,9 @@
       targetPort: 8080
     to:
     kind: Service
-    name: f5-demo-app-route-a
+    name: f5-demo-app-route-basic
     weight: 20
   alternateBackends:
   - kind: Service
-    name: f5-demo-app-route-b
+    name: f5-demo-app-route-balance
     weight: 10
