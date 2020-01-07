@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: f5-override-as3-declaration
+  namespace: f5
+data:
+  template: |
+    {
+      "declaration": {
+        "appaotel1_AS3": {
+          "Shared": {
+            "RD_000_VS_STD_APPAOTEL1_443": {
+              "profileHTTP": {
+                "bigip": "/Common/http"
+              },
+              "profileTCP": {
+                "bigip": "/Common/tcp"
+              },
+              "securityLogProfiles": [
+                {
+                  "bigip": "/Common/Log all requests"
+                }
+              ],
+              "snat": {
+                "bigip": "/Common/RD_000_SNATPOOL_GENERIC"
+              }
+            }
+          }
+        }
+      }
+    }

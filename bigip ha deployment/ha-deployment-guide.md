@@ -7,7 +7,7 @@ This page is created to document OCP 3.11 with integration of CIS and BIGIP in H
 Environment parameters
 
 * OCP 3.11 - one master and two worker nodes
-* CIS 1.12
+* CIS 1.13 pre-release amit49g/k8s-bigip-ctlr:tsys-1.13-cf-1
 * AS3: 3.16
 * 2 BIG-IP 14.1.2.2
 
