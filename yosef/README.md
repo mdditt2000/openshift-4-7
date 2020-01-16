@@ -1,4 +1,4 @@
-ReadMe for AS3-17.2 pre-build that provides support for referencing a BotPolicy
+**ReadMe** for AS3-17.2 pre-build that provides support for referencing a BotPolicy
 
 We have tested that Bot-Defense profiles get attached with virtual server with User Defined configmap as well as with AS3 overwrite functionality.
  
@@ -27,4 +27,6 @@ data:
         }
     }
 ```
-I added the bot-policy configuration to the as3 override configuration here f5-override-as3-declaration.yaml. Please download the AS3 version here https://github.com/mdditt2000/openshift-3-11/blob/master/yosef/f5-appsvcs-3.17.0-2.noarch.rpm
+I added the bot-policy configuration to the as3 override configuration here: https://github.com/mdditt2000/openshift-3-11/blob/master/yosef/f5-override-as3-declaration.yaml
+
+Please download the AS3 version here: https://github.com/mdditt2000/openshift-3-11/blob/master/yosef/f5-appsvcs-3.17.0-2.noarch.rpm
