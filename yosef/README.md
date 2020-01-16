@@ -30,3 +30,5 @@ data:
 I added the bot-policy configuration to the as3 override configuration here: https://github.com/mdditt2000/openshift-3-11/blob/master/yosef/f5-override-as3-declaration.yaml
 
 Please download the AS3 version here: https://github.com/mdditt2000/openshift-3-11/blob/master/yosef/f5-appsvcs-3.17.0-2.noarch.rpm
+
+**Note** CIS controller will need to be restart after applying update to AS3 override configMap. Enhancement to resolve this restart is planned
