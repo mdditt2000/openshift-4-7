@@ -1,6 +1,6 @@
 **ReadMe** for AS3-17.2 pre-build that provides support for referencing a BotPolicy
 
-We have tested that Bot-Defense profiles get attached with virtual server with User Defined configmap as well as with AS3 overwrite functionality.
+We have tested that Bot-Defense profiles get attached to virtual server with AS3 overwrite functionality.
  
 Please find the following examples for same
  
