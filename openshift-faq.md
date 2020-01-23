@@ -1,6 +1,6 @@
 # OpenShift FAQ for Container Ingress Controller
 
-This page is under construction
+## OpenShift node install with multiple interfaces
 
 **Problem:** CIS takes the node ip information from kube api in cluster mode. It should actually take these details from flannel as CIS creates the fdb entries in BIG-IP using these details. This issue is only seen when the nodes are multiple interfaces. 
 
@@ -19,3 +19,27 @@ and edit the yaml to add the annotations and apply
 Github issue https://github.com/F5Networks/k8s-bigip-ctlr/issues/797
 
 ---
+
+## Memory recommendation using CIS and AS3
+
+**Solution:** restjavad recommendations and best practices when using CIS with AS3. The re-provisioning of memory will trigger a restart of the services
+
+Increase memory assigned to the Linux host:
+```
+tmsh modify sys db provision.extramb value 1000
+```
+Allow restjavad to access the extra memory:
+```
+tmsh modify sys db restjavad.useextramb value true
+```
+Save the config:
+```
+tmsh save sys config
+```
+Wait until the unit is online again. Increase the restjavad maxMessageBodySize property using the following curl command:
+```
+[root@bip-ip-ve1-pme:Active:In Sync] config # curl -s -f -u admin: -H "Content-Type: application/json" -d '{"maxMessageBodySize":134217728}' -X POST http://localhost:8100/mgmt/shared/server/messaging/settings/8100
+{"maxMessageBodySize":134217728,"localhostRestnodedConnectionLimit":8,"defaultEventHandlerTimeoutInSeconds":60,"minEventHandlerTimeoutInSeconds":15,"maxEventHandlerTimeoutInSeconds":60,"maxActiveLoginTokensPerUser":100,"generation":1,"lastUpdateMicros":1579769654192610,"kind":"shared:server:messaging:settings:8100:restservermessagingpoststate","selfLink":"https://localhost/mgmt/shared/server/messaging/settings/8100"}
+```
+
+
