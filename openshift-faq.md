@@ -38,8 +38,9 @@ tmsh save sys config
 ```
 Wait until the unit is online again. Increase the restjavad maxMessageBodySize property using the following curl command:
 ```
-[root@bip-ip-ve1-pme:Active:In Sync] config # curl -s -f -u admin: -H "Content-Type: application/json" -d '{"maxMessageBodySize":134217728}' -X POST http://localhost:8100/mgmt/shared/server/messaging/settings/8100
-{"maxMessageBodySize":134217728,"localhostRestnodedConnectionLimit":8,"defaultEventHandlerTimeoutInSeconds":60,"minEventHandlerTimeoutInSeconds":15,"maxEventHandlerTimeoutInSeconds":60,"maxActiveLoginTokensPerUser":100,"generation":1,"lastUpdateMicros":1579769654192610,"kind":"shared:server:messaging:settings:8100:restservermessagingpoststate","selfLink":"https://localhost/mgmt/shared/server/messaging/settings/8100"}
+[curl -s -f -u admin: -H "Content-Type: application/json" -d '{"maxMessageBodySize":134217728}' -X POST http://localhost:8100/mgmt/shared/server/messaging/settings/8100
 ```
-
+.. image:: images/filename.png
+  :width: 400
+  :alt: Alternative text
 
