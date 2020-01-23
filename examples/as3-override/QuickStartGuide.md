@@ -1,5 +1,7 @@
 # AS3 Override Example
 
+**Note** CIS controller will need to be restart after applying update to AS3 override configMap. Enhancement to resolve this restart is planned
+
 AS3 Override is a refer of existing configuration on BIGIP. CIS is attaching these profiles/polices to the virtual
 
 ## Dos profile
@@ -84,4 +86,102 @@ data:
     }
 ```
 
-**Note** CIS controller will need to be restart after applying update to AS3 override configMap. Enhancement to resolve this restart is planned
+
+## Certificate Override In BIG-IP Example
+
+```
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: example-cert
+  namespace: kube-system
+data:
+  template: |
+    {
+        "declaration": {
+            "test_AS3": {
+                "Shared": {
+                    "osr_default_bar_com_cssl": {
+                   "certificate": "-----BEGIN CERTIFICATE-----
+                                    -----END CERTIFICATE-----",
+                 "privateKey" :"-----BEGIN RSA PRIVATE KEY-----
+                                -----END RSA PRIVATE KEY-----"
+                   }
+                }
+            }
+        }
+    }
+```
+
+
+
+## Override Virtual Server
+
+```
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: example-vs
+  namespace: kube-system
+data:
+  template: |
+    {
+        "declaration": {
+            "test_AS3": {
+                "Shared": {
+                    "ose_vserver": {
+                        "virtualAddresses": [
+                            "172.16.3.7"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+```
+
+
+## Override Pool Members
+
+```
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: example-pool
+  namespace: kube-system
+data:
+  template: |
+    {
+        "declaration": {
+            "test_AS3": {
+                "Shared": {
+                    "openshift_default_svc_dynamic_ratio_member": {
+                        "members": [
+                         {
+                        "addressDiscovery": "static",
+                        "serverAddresses": [
+                            "172.16.1.8"
+                        ],
+                        "servicePort": 32165
+                    },
+                    {
+                        "addressDiscovery": "static",
+                        "serverAddresses": [
+                            "172.16.1.13"
+                        ],
+                        "servicePort": 32165
+                    },
+                    {
+                        "addressDiscovery": "static",
+                        "serverAddresses": [
+                            "172.16.1.17"
+                        ],
+                        "servicePort": 32165
+                    }
+                         ]
+                    }
+                }
+            }
+        }
+    }
+```
