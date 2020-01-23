@@ -20,11 +20,11 @@ Github issue https://github.com/F5Networks/k8s-bigip-ctlr/issues/797
 
 ---
 
-## Memory recommendation using CIS and AS3
+## restjavad memory recommendation using CIS and AS3
 
-**Solution:** restjavad recommendations and best practices when using CIS with AS3. The re-provisioning of memory will trigger a restart of the services
+**Solution:** It is recommended to increase restjavad memory provisioning when using CIS with AS3. The re-provisioning of memory will trigger a restart of the services
 
-Increase memory assigned to the Linux host:
+Increase memory assigned to 1GB the BIGIP:
 ```
 tmsh modify sys db provision.extramb value 1000
 ```
@@ -42,6 +42,7 @@ Wait until the unit is online again. Increase the restjavad maxMessageBodySize p
 ```
 
 Image below displays the manual resource provisioning
+
 ![resource image](images/resource.png)
 
 ---
