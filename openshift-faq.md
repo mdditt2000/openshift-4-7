@@ -38,7 +38,7 @@ tmsh save sys config
 ```
 Wait until the unit is online again. Increase the restjavad maxMessageBodySize property using the following curl command:
 ```
-[curl -s -f -u admin: -H "Content-Type: application/json" -d '{"maxMessageBodySize":134217728}' -X POST http://localhost:8100/mgmt/shared/server/messaging/settings/8100
+curl -s -f -u admin: -H "Content-Type: application/json" -d '{"maxMessageBodySize":134217728}' -X POST http://localhost:8100/mgmt/shared/server/messaging/settings/8100
 ```
 
 Image below displays the manual resource provisioning
