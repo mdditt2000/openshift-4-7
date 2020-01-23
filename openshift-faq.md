@@ -40,7 +40,8 @@ Wait until the unit is online again. Increase the restjavad maxMessageBodySize p
 ```
 [curl -s -f -u admin: -H "Content-Type: application/json" -d '{"maxMessageBodySize":134217728}' -X POST http://localhost:8100/mgmt/shared/server/messaging/settings/8100
 ```
+
+Image below displays the manual resource provisioning
 ![resource image](images/resource.png)
-Format: ![Alt Text](url)
 
 ---
