@@ -4,7 +4,7 @@
 
 AS3 Override is a refer of existing configuration on BIGIP. CIS is attaching these profiles/polices to the virtual
 
-## Dos profile
+## Dos profile with logging
 
 ```
 AS3 Override:
@@ -16,21 +16,26 @@ metadata:
 data:
   template: |
     {
-        "declaration": {
-            "test_AS3": {
-                "Shared": {
-                    "https_ose_vserver": {
-                        "profileDOS": {
-                             "bigip": "/Common/dos-defense"
-                        }
-                    }
+      "declaration": {
+        "test_AS3": {
+          "Shared": {
+            "https_ose_vserver": {
+              "profileDOS": {
+                "bigip": "/Common/dos-defense"
+              },
+              "securityLogProfiles": [
+                {
+                  "bigip": "/Common/Log all requests"
                 }
+              ]
             }
+          }
         }
+      }
     }
 ```
 
-## Waf profile
+## Waf profile with logging
 
 A WAF route annotation virtual-server.f5.com/waf: /Common/WAF_Policy is available or you can use the AS3 override feature. Example of route annotation: [route](https://github.com/mdditt2000/openshift-3-11/blob/master/examples/routes/f5-demo-app-route-waf.yaml)
 
@@ -44,17 +49,22 @@ metadata:
 data:
   template: |
     {
-        "declaration": {
-            "test_AS3": {
-                "Shared": {
-                    "https_ose_vserver": {
-                        "policyWAF": {
-                             "bigip": "/Common/WAF_Policy"
-                        }
-                    }
+      "declaration": {
+        "test_AS3": {
+          "Shared": {
+            "https_ose_vserver": {
+              "policyWAF": {
+                "bigip": "/Common/WAF_Policy"
+              },
+              "securityLogProfiles": [
+                {
+                  "bigip": "/Common/Log all requests"
                 }
+              ]
             }
+          }
         }
+      }
     }
 ```
 

@@ -1,15 +1,11 @@
 {
   "declaration": {
-    "openshift_AS3": {
+    "test_AS3": {
       "Shared": {
         "https_ose_vserver": {
-          "securityLogProfiles": [
-            {
-              "bigip": "/Common/Log all requests"
-            }
-          ]
-        },
-        "ose_vserver": {
+          "policyWAF": {
+            "bigip": "/Common/WAF_Policy"
+          },
           "securityLogProfiles": [
             {
               "bigip": "/Common/Log all requests"

@@ -1,0 +1,26 @@
+AS3 Override:
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: override
+  namespace: default
+data:
+  template: |
+    {
+      "declaration": {
+        "test_AS3": {
+          "Shared": {
+            "https_ose_vserver": {
+              "policyWAF": {
+                "bigip": "/Common/WAF_Policy"
+              },
+              "securityLogProfiles": [
+                {
+                  "bigip": "/Common/Log all requests"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
