@@ -47,7 +47,7 @@ Image below displays the manual resource provisioning
 
 ---
 
-## What subnet to use for the self-ip's on BIG-IP
+## What subnet to use for the Self-IP's on BIG-IP
 
 We can use any subnet for self-IPs in BIG-IP other than the cluster network. But for the cluster network we can use any subnet (/14,/15 etc) because to be in the same network as the cluster is listening to. In fact to communicate with the k8s/ openshift cluster without networking issues.
  
@@ -55,7 +55,7 @@ For example in our regular testing:
  
 BIGIP is configured with selfIP: 10.131.255.1 with subnet 255.252.0.0(/14). See the pic below for more details. With this we can calculate our host subnet range as : 10.128.0.1 - 10.131.255.254
 
-OpenShift Self-IP [OpenShift Self-IP](https://github.com/mdditt2000/openshift-3-11/blob/master/images/Screenshot%202020-05-20%20at%207.18.37%20AM.png)
+![resource image](images/Screenshot%202020-05-20%20at%207.18.37%20AM.png)
  
 But our cluster(openshift or k8s) is listening on below Cluster network (see the highlighted one below):
  
