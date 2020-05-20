@@ -46,3 +46,25 @@ Image below displays the manual resource provisioning
 ![resource image](images/resource.png)
 
 ---
+
+## What subnet to use for the self-ip's on BIG-IP
+
+We can use any subnet for self-IPs in BIG-IP other than the cluster network. But for the cluster network we can use any subnet (/14,/15 etc) because to be in the same network as the cluster is listening to. In fact to communicate with the k8s/ openshift cluster without networking issues.
+ 
+For example in our regular testing:
+ 
+BIGIP is configured with selfIP: 10.131.255.1 with subnet 255.252.0.0(/14). See the pic below for more details. With this we can calculate our host subnet range as : 10.128.0.1 - 10.131.255.254
+
+picture
+ 
+But our cluster(openshift or k8s) is listening on below Cluster network (see the highlighted one below):
+ 
+```
+openshift$ oc get hostsubnets
+NAME            HOST            HOST IP         SUBNET            EGRESS CIDRS   EGRESS         bigip           bigip                                     172.16.1.23   10.131.255.0/31   
+cosmic-master.example.com    cosmic-master.example.com    172.16.1.3    10.128.0.0/23
+cosmic-worker0.example.com   cosmic-worker0.example.com   172.16.1.11   10.128.6.0/23
+cosmic-worker1.example.com   cosmic-worker1.example.com   172.16.1.9    10.130.4.0/23
+```
+So, in order to communicate with the nodes in ClusterIP the BIG-IP selfIP should be in this range. So we configured with /14 to allow host subnet range i.e. 10.128.0.1 - 10.131.255.254.
+And as we know the pod uses the same network as it is highlighted below based on the node it is getting deployed.

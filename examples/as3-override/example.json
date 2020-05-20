@@ -1,0 +1,60 @@
+ {
+      "declaration": {
+        "test_AS3": {
+          "Shared": {
+            "https_ose_vserver": {
+              "profileHTTP": {
+                "bigip": "/Common/PROF_HTTP_REDIRECT_HSTS_XFF"
+              },
+              "profileTCP": {
+                "ingress": {
+                  "bigip": "/Common/PROF_TCP_WANOPTIMIZED_KEEPALIVE_120_NONAGLE"
+                },
+                "egress": {
+                  "bigip": "/Common/PROF_TCP_LANOPTIMIZED_KEEPALIVE_120"
+                }
+              },
+              "securityLogProfiles": [
+              {
+                "bigip": "/Common/Log all requests"
+              }
+              ],
+              "snat": {
+                "bigip": "/Common/RD_000_SNATPOOL_GENERIC"
+              },
+              "iRules": [
+              {
+                "bigip": "/Common/Shared/http_redirect_irule"
+              },
+              {
+                "bigip": "/Common/_sys_APM_ExchangeSupport_helper"
+              }
+              ],
+              "persistenceMethods": [
+              {
+                "bigip": "/Common/PROF_PERSIST_COOKIE_SESSION_VS080158046211"
+              }
+              ],
+              "lastHop": "disable",
+              "profileAnalytics": {
+                "bigip": "/Common/PROF_ANALYTICS_HTTP_CUSTOMIZED"
+              },
+              "profileDOS": {
+                "bigip": "/Common/PROF_WAF_BOT_DEFENSE_RELAXED"
+              },
+              "allowVlans": [
+              {
+                "bigip": "/Common/RD_000_VLAN_EXT"
+              }
+              ],
+              "profileAnalytics": {
+                "bigip": "/Common/PROF_ANALYTICS_HTTP_CUSTOMIZED"
+              },
+              "profileBotDefense": {
+                "bigip": "/Common/bot-defense"
+              }
+            }
+          }
+        }
+      }
+    }
