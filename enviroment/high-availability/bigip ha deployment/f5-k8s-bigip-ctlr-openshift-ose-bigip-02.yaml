@@ -50,8 +50,6 @@
               # Logging level
               "--log-level=DEBUG",
               "--log-as3-response=true",
-              # AS3 override functionality
-              "--override-as3-declaration=f5demo/f5-route-vs-override",
               # Self-signed cert
               "--insecure=true",
               "--agent=as3"
