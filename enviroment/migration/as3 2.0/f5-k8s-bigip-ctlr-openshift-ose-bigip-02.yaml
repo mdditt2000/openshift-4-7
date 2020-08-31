@@ -16,7 +16,7 @@
         serviceAccountName: bigip-ctlr
         containers:
           - name: k8s-bigip-ctlr
-            image: f5networks/k8s-bigip-ctlr:1.10.0
+            image: f5networks/k8s-bigip-ctlr:2.0.0
             env:
               - name: BIGIP_USERNAME
                 valueFrom:
@@ -49,10 +49,8 @@
               "--route-vserver-addr=10.192.75.107",
               # Logging level
               "--log-level=DEBUG",
-              "--log-as3-response=true",
               # Self-signed cert
               "--insecure=true",
-              "--agent=as3"
               ]
         imagePullSecrets:
           - name: f5-docker-images
