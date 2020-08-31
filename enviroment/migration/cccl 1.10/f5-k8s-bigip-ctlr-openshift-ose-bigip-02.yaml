@@ -49,10 +49,6 @@
               "--route-vserver-addr=10.192.75.107",
               # Logging level
               "--log-level=DEBUG",
-              "--log-as3-response=true",
-              # Self-signed cert
-              "--insecure=true",
-              "--agent=as3"
               ]
         imagePullSecrets:
           - name: f5-docker-images
