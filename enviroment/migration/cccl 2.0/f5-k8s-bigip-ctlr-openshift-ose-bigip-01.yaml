@@ -49,6 +49,7 @@
               "--route-vserver-addr=10.192.75.107",
               # Logging level
               "--log-level=DEBUG",
+              "--agent=cccl",
               ]
         imagePullSecrets:
           - name: f5-docker-images
