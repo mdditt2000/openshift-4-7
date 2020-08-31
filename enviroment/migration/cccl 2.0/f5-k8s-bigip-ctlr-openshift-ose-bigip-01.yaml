@@ -34,7 +34,7 @@
                     key: password
             command: ["/app/bin/k8s-bigip-ctlr"]
             args: [
-              "--bigip-username=$(BIGIP_USERNAME)",
+         "--bigip-username=$(BIGIP_USERNAME)",
               "--bigip-password=$(BIGIP_PASSWORD)",
               # Replace with the IP address or hostname of your BIG-IP device
               "--bigip-url=192.168.200.82",
@@ -49,9 +49,6 @@
               "--route-vserver-addr=10.192.75.107",
               # Logging level
               "--log-level=DEBUG",
-              # Self-signed cert
-              "--insecure=true",
-              "--agent=as3"
               ]
         imagePullSecrets:
           - name: f5-docker-images
