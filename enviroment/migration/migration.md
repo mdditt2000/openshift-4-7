@@ -2,10 +2,9 @@
 
 This page is created to provide guidance on how to migrate and upgrade the following:
 
-* migration from iApp ConfigMap using CCCL to AS3 ConfigMap
-* upgrading from CIS 1.x to CIS 2.x using CCCL to AS3
-* removing of _AS3 partition
-* CIS and AS3 support schema versions
+* Migration from iApp ConfigMap using CCCL to AS3 ConfigMap
+* Upgrading from CIS 1.x to CIS 2.x using CCCL to AS3
+* Removing of _AS3 partition
 
 # Migration from iApp ConfigMap using CCCL to AS3 ConfigMap
 
@@ -140,9 +139,11 @@ In CIS v2.x the default API agent was changed from CCCL to AS3. This guide is cr
 
 ## Step 1
 
-Upgrade CIS 1.x to CIS 2.0
-
 When migrating from CIS 1.x to CIS 2.x using CCCL to AS3 is very important to upgrade to CIS 2.0 first with CCCL agent. Very important to add the CCCL agent to the CIS argument before creating the CIS deployment
+
+* Upgrade CIS 1.x to CIS 2.0 remaining on CCCL agent
+* Add the agent=cccl to the CIS deployment
+* Make sure all namespaces that CIS is watching are specified in the CIS deployment
 
 ```
 args: [
@@ -165,9 +166,16 @@ args: [
 ]
 ```
 
+Now that CIS is upgraded to CIS 2.0 the next steps are to convert to agent AS3. 
+
 ## Step 2
 
 Convert CIS from agent CCCL to AS3. If BIG-IP has a self-signed certificate for management you need to add insecure=true or schema validation will fail. You also need to install the AS3 Extension. For CIS 2.0 install AS3-18. Follow the following document to install AS3 Extension on BIG-IP:
+
+* Remove agent=cccl from the CIS deployment
+* IF BIG-IP is using a self-signed cert add insecure=true to the CIS deployment
+* Install AS3-18 which the correct version for CIS 2.0
+* Make sure all namespaces that CIS is watching are specified in the CIS deployment
 
 ### Install AS3 on BIGIP
 
@@ -195,16 +203,16 @@ args: [
 ]
 ```
 
-CIS will create a tenant on the BIG-IP names base-tenant_AS3. This will be removed in Step 3 
+**Note** CIS will create a new tenant on the BIG-IP called base-tenant_AS3. In my example that tenant is openshift_AS3. All the virtual configuration will no be configured in the new tenant. This is temporary and will be resoled in Step 3.
 
 ## Step 3
 
 Upgrade to CIS 2.1.x and remove the _AS3 partition. No change in the CIS arguments is required. Just a CIS version and AS3 update. Use CIS 2.1.1 with AS3.21
 
+* Install AS3-21 which the correct version for CIS 2.1.1
+
+Migration from CIS 1.x to CIS 2.x is now complete. CIS has also removed the base-tenant_AS3 configuration.
+
 # Removing of _AS3 partition
 
-As mentioned above uses using CIS 2.x with Ingress or Routes with agent AS3, CIS 2.1 will use the CIS base partition.
-
-# CIS and AS3 support schema versions
-
-CIS 2.1 support AS3-20 and below. If using AS3-21 please update CIS with the following patch specified in Github issue https://github.com/F5Networks/k8s-bigip-ctlr/issues/1433
+For Ingress and Routes, CIS 2.1 no longers requires the base-tenant_AS3 tenant.  When upgrading to CIS 2.1 the _AS3 will be removed.
