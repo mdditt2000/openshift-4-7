@@ -166,6 +166,8 @@ args: [
 ]
 ```
 
+* Step 1 example [repo](https://github.com/mdditt2000/openshift-3-11/tree/master/enviroment/migration/cccl%202.0)
+
 Now that CIS is upgraded to CIS 2.0 the next steps are to convert to agent AS3. 
 
 ## Step 2
@@ -203,6 +205,8 @@ args: [
 ]
 ```
 
+* Step 2 example [repo](https://github.com/mdditt2000/openshift-3-11/tree/master/enviroment/migration/as3%202.0)
+
 **Note** CIS will create a new tenant on the BIG-IP called base-tenant_AS3. In my example that tenant is openshift_AS3. All the virtual configuration will no be configured in the new tenant. This is temporary and will be resoled in Step 3.
 
 ## Step 3
@@ -212,6 +216,8 @@ Upgrade to CIS 2.1.x and remove the _AS3 partition. No change in the CIS argumen
 * Install AS3-21 which the correct version for CIS 2.1.1
 
 Migration from CIS 1.x to CIS 2.x is now complete. CIS has also removed the base-tenant_AS3 configuration.
+
+* Step 3 example [repo](https://github.com/mdditt2000/openshift-3-11/tree/master/enviroment/migration/as3%202.1.1)
 
 # Removing of _AS3 partition
 
