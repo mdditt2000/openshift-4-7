@@ -3,7 +3,7 @@
 This page is created to provide guidance on how to migrate and upgrade the following:
 
 * Migration from iApp ConfigMap using CCCL to AS3 ConfigMap
-* Upgrading from CIS 1.x to CIS 2.x using CCCL to AS3
+* Upgrading from CIS 1.x to CIS 2.1 and above using CCCL to AS3
 * Removing of _AS3 partition
 
 # Migration from iApp ConfigMap using CCCL to AS3 ConfigMap
@@ -128,7 +128,7 @@ Example of AS3 ConfigMap with AS3 for tenant k8s_app
             }
         }
 
-# Upgrading from CIS 1.x to CIS 2.x using CCCL to AS3
+# Upgrading from CIS 1.x to CIS 2.1 and above using CCCL to AS3
 
 CIS has two API's to communicate with BIG=IP
 
