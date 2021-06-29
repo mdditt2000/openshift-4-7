@@ -1,36 +1,29 @@
-# OpenShift 4.7 and Container Ingress Controller Quick User-Guide for Standalone BIGIP 
+# OpenShift 4.7 and Container Ingress Controller Quick User-Guide for Standalone BIG-IP 
 
-This page is created to document OCP 3.11 with integration of CIS and BIGIP. This document provides configuration for a standalone BIGIP configuration. Please open issues on my github page on contact me at m.dittmer@f5.com
+This user guide is create to document OpenShift 4.7 integration of CIS and BIG-IP. This user guide provides configuration for a standalone BIG-IP configuration using OVS Networking
 
-# Note
+## Environment parameters
 
-Environment parameters
-
-* OCP 4.7 - three master and three worker nodes cluster running on VMware 
+* OpenShift 4.7 on vSphere with installer-provisioned infrastructure
 * CIS 2.5
 * AS3: 3.28
 * BIG-IP 16.0.1.1
 
-# OpenShift 4,7 Install
-
-OpenShift on vSphere with installer-provisioned infrastructure
-
 ## Prerequisite
 
-Since CIS is using the AS3 declarative API we need the AS3 extension installed on BIGIP. Follow the link to install AS3
+Since CIS is using the AS3 declarative API we need the AS3 extension installed on BIG-IP. Follow the link to install AS3
  
-* Install AS3 on BIGIP
+* Install AS3 on BIG-IP
 https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/userguide/installation.html
 
-## Connect OpenShift cluster to BIG-IP
-
-This user guide is based on default OVS networking using VXLAN 
 
 ## Create a BIG-IP VXLAN tunnel
 
 ```
 (tmos)# create net tunnels vxlan vxlan-mp flooding-type multipoint
 (tmos)# create net tunnels tunnel openshift_vxlan key 0 profile vxlan-mp local-address 192.168.200.60
+
+![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-10_12-59-30.png)
 
 Create a host subnet for the BIPIP. This will provide the subnet for creating the tunnel self-IP
 
