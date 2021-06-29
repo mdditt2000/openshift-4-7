@@ -1,4 +1,4 @@
-# OpenShift 3.11 and Container Ingress Controller Quick Start Guide for Single BIGIP 
+# OpenShift 4.7 and Container Ingress Controller Quick User-Guide for Standalone BIGIP 
 
 This page is created to document OCP 3.11 with integration of CIS and BIGIP. This document provides configuration for a standalone BIGIP configuration. Please open issues on my github page on contact me at m.dittmer@f5.com
 
@@ -6,18 +6,14 @@ This page is created to document OCP 3.11 with integration of CIS and BIGIP. Thi
 
 Environment parameters
 
-* OCP 3.11 - one master and two worker nodes
-* CIS 1.12
-* AS3: 3.16
-* BIG-IP 14.1.2
+* OCP 4.7 - three master and three worker nodes cluster running on VMware 
+* CIS 2.5
+* AS3: 3.28
+* BIG-IP 16.0.1.1
 
-# OpenShift 3.11 Install
+# OpenShift 4,7 Install
 
-OCP is installed on RHEL 7.5 on ESXi
-
-* ose-3-11-master  
-* ose-3-11-node1
-* ose-3-11-node2
+OpenShift on vSphere with installer-provisioned infrastructure
 
 ## Prerequisite
 
@@ -26,12 +22,20 @@ Since CIS is using the AS3 declarative API we need the AS3 extension installed o
 * Install AS3 on BIGIP
 https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/userguide/installation.html
 
-## Create a new OpenShift HostSubnet
+## Connect OpenShift cluster to BIG-IP
+
+This user guide is based on default OVS networking using VXLAN 
+
+## Create a BIG-IP VXLAN tunnel
+
+```
+(tmos)# create net tunnels vxlan vxlan-mp flooding-type multipoint
+(tmos)# create net tunnels tunnel openshift_vxlan key 0 profile vxlan-mp local-address 192.168.200.60
 
 Create a host subnet for the BIPIP. This will provide the subnet for creating the tunnel self-IP
 
 ```
-oc create -f f5-kctlr-openshift-hostsubnet.yaml
+oc create -f f5-openshift-hostsubnet.yaml
 ```
 ```
 [root@ose-3-11-master openshift-3-11]# oc get hostsubnets
@@ -39,7 +43,7 @@ NAME                               HOST                               HOST IP   
 f5-server                          f5-server                          192.168.200.83   10.131.0.0/23   []     []
 ose-3-11-master.example.com        ose-3-11-master.example.com        192.168.200.84   10.128.0.0/23   []     []
 ose-3-11-node1.example.com         ose-3-11-node1.example.com         192.168.200.85   10.130.0.0/23   []     []
-ose-3-11-node2.lexample.com        ose-3-11-node2.example.com         192.168.200.86   10.129.0.0/23   []     []
+ose-3-11-node2.lexample.com        ose-3-11-node2.example.com         192.168.200.60   10.129.0.0/23   []     []
 ```
 ## Create a BIG-IP VXLAN tunnel
 
