@@ -1,6 +1,6 @@
 # OpenShift 4.7 and Container Ingress Controller Quick User-Guide for Standalone BIG-IP 
 
-This user guide is create to document OpenShift 4.7 integration of CIS and BIG-IP. This user guide provides configuration for a standalone BIG-IP configuration using OVS Networking
+This user guide is create to document OpenShift 4.7 integration of CIS and BIG-IP. This user guide provides configuration for a standalone BIG-IP configuration using OpenShift SDN
 
 ## Environment parameters
 
@@ -31,14 +31,20 @@ Create a host subnet for the BIPIP. This will provide the subnet for creating th
 ```
 oc create -f f5-openshift-hostsubnet.yaml
 ```
+
 ```
-[root@ose-3-11-master openshift-3-11]# oc get hostsubnets
-NAME                               HOST                               HOST IP          SUBNET          EGRESS CIDRS   EGRESS IPS
-f5-server                          f5-server                          192.168.200.83   10.131.0.0/23   []     []
-ose-3-11-master.example.com        ose-3-11-master.example.com        192.168.200.84   10.128.0.0/23   []     []
-ose-3-11-node1.example.com         ose-3-11-node1.example.com         192.168.200.85   10.130.0.0/23   []     []
-ose-3-11-node2.lexample.com        ose-3-11-node2.example.com         192.168.200.60   10.129.0.0/23   []     []
+# oc get hostsubnet
+NAME                        HOST                        HOST IP          SUBNET          EGRESS CIDRS   EGRESS IPS
+f5-server                   f5-server                   192.168.200.60   10.131.2.0/23
+ocp-pm-bwmmz-master-0       ocp-pm-bwmmz-master-0       10.192.75.229    10.130.0.0/23
+ocp-pm-bwmmz-master-1       ocp-pm-bwmmz-master-1       10.192.75.231    10.129.0.0/23
+ocp-pm-bwmmz-master-2       ocp-pm-bwmmz-master-2       10.192.75.230    10.128.0.0/23
+ocp-pm-bwmmz-worker-9ch4b   ocp-pm-bwmmz-worker-9ch4b   10.192.75.234    10.129.2.0/23
+ocp-pm-bwmmz-worker-lws6s   ocp-pm-bwmmz-worker-lws6s   10.192.75.235    10.131.0.0/23
+ocp-pm-bwmmz-worker-qdhgx   ocp-pm-bwmmz-worker-qdhgx   10.192.75.233    10.128.2.0/23
 ```
+f5-openshift-hostsubnet.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/cis/f5-openshift-hostsubnet.yaml)
+
 ## Create a BIG-IP VXLAN tunnel
 
 ## create net tunnels vxlan vxlan-mp flooding-type multipoint
