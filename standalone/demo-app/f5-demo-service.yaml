@@ -7,9 +7,9 @@ metadata:
 spec:
   ports:
   - name: f5-demo
-    port: 8080
+    port: 80
     protocol: TCP
-    targetPort: 8080
+    targetPort: 80
   type: ClusterIP
   selector:
     app: f5-demo
