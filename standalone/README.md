@@ -1,6 +1,6 @@
-# OpenShift 4.7 and Container Ingress Controller Quick User-Guide for Standalone BIG-IP 
+# OpenShift 4.7 and F5 Container Ingress Services (CIS) User-Guide for Standalone BIG-IP 
 
-This user guide is create to document OpenShift 4.7 integration of CIS and BIG-IP. This user guide provides configuration for a standalone BIG-IP configuration using OpenShift SDN
+This user guide is create to document OpenShift 4.7 integration of CIS and standalone BIG-IP. This user guide provides configuration for a standalone BIG-IP configuration using OpenShift SDN
 
 ## Environment parameters
 
