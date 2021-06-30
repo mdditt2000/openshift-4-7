@@ -157,6 +157,8 @@ Select the **f5-bigip-ctlr-operator** to see more details on the CIS deployment.
 
 ## Installing the Demo App in OpenShift
 
+### Step 10:
+
 Deploy demo app in OpenShift. This could be done using the OpenShift UI or CLI. In this guide i use the CLI. Demo app repo available below 
 
 ```
@@ -164,4 +166,13 @@ Deploy demo app in OpenShift. This could be done using the OpenShift UI or CLI. 
 deployment.apps/f5-demo created
 service/f5-demo created
 ```
-demo-app [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/cis/f5-openshift-hostsubnet.yaml)
+demo-app [repo](https://github.com/mdditt2000/openshift-4-7/tree/master/standalone/demo-app)
+
+You can validate the demo app install via the OpenShift UI
+
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/diagram/2021-06-30_11-39-52.png)
+
+## Create Route for Ingress traffic to Demo App
+
+### Step 11:
+
