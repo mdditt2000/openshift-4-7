@@ -16,7 +16,9 @@ Since CIS is using the AS3 declarative API we need the AS3 extension installed o
 * Install AS3 on BIG-IP
 https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/userguide/installation.html
 
-## Create a BIG-IP VXLAN tunnel
+## Create a BIG-IP VXLAN tunnel for OpenShift SDN
+
+### Step 1:
 
 ```
 (tmos)# create net tunnels vxlan vxlan-mp flooding-type multipoint
@@ -24,6 +26,8 @@ https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/usergui
 ```
 
 ![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/diagram/2021-06-29_15-42-04.png)
+
+### Step 2:
 
 Create a host subnet for the BIP-IP. This will provide the subnet for creating the tunnel self-IP
 
@@ -42,7 +46,7 @@ ocp-pm-bwmmz-worker-qdhgx   ocp-pm-bwmmz-worker-qdhgx   10.192.75.233    10.128.
 ```
 f5-openshift-hostsubnet.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/cis/f5-openshift-hostsubnet.yaml)
 
-## Add the BIG-IP device to the OpenShift overlay network 
+### Step 3:
 
     (tmos)# create net self 10.131.2.60/14 allow-service all vlan openshift_vxlan
 
@@ -52,17 +56,23 @@ Subnet from the **f5-server** hostsubnet create above. Used .60 to be consistent
 
 ## Create a new partition on your BIG-IP system
 
+### Step 4:
+
     (tmos)# create auth partition OpenShift
 
 This needs to match the partition in the controller configuration created by the CIS Operator
 
 ## Installing the F5 Container Ingress Services Operator in OpenShift
 
-In OpenShift, CIS can be installed manually using a a yaml deployment manifest or using the Operator in OpenShift. The CIS Operator is a packaged deployment of CIS and will use Helm Charts to create the deployment. This user-guide provide additional information and examples when using the CIS Operator in OpenShift.
+In OpenShift, CIS can be installed manually using a a yaml deployment manifest or using the Operator in OpenShift. The CIS Operator is a packaged deployment of CIS and will use Helm Charts to create the deployment. This user-guide provide additional information and examples when using the CIS Operator in OpenShift
+
+### Step 5:
 
 Create BIG-IP login credentials for use with Operator Helm charts
 
     oc create secret generic bigip-login  -n kube-system --from-literal=username=admin  --from-literal=password=<secret>
+
+### Step 6:
 
 Locate the F5 Container Ingress Services Operator in OpenShift OperatorHub as shown in the diagram below. Recommend search for F5 
 
@@ -71,6 +81,8 @@ Locate the F5 Container Ingress Services Operator in OpenShift OperatorHub as sh
 Select the Operator to Install. In this example I am installing the latest Operator 1.7.0. Select the Install tab as shown in the diagram
 
 ![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-10_13-20-27.png)
+
+### Step 7:
 
 Install the Operator and provide the installation mode, installed namespaces and approval strategy. In this user-guide and demo I am using the defaults
 
@@ -87,6 +99,8 @@ Once installed select the View Operator tab
 Now that the operator is installed you can create an instance of CIS. This will deploy CIS in OpenShift
 
 ![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-14_14-07-36.png)
+
+### Step 8:
 
 Note that currently some fields may not be represented in form so its best to use the "YAML View" for full control of object creation. Select the "YAML View"
 
@@ -130,6 +144,8 @@ spec:
 ```
 
 Select the Create tab
+
+### Step 9:
 
 Validate CIS deployment. Select Workloads/Deployments 
 
