@@ -25,11 +25,9 @@ https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/usergui
 
 ![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/diagram/2021-06-29_15-42-04.png)
 
-Create a host subnet for the BIPIP. This will provide the subnet for creating the tunnel self-IP
+Create a host subnet for the BIP-IP. This will provide the subnet for creating the tunnel self-IP
 
-```
-oc create -f f5-openshift-hostsubnet.yaml
-```
+    oc create -f f5-openshift-hostsubnet.yaml
 
 ```
 # oc get hostsubnet
@@ -45,82 +43,100 @@ ocp-pm-bwmmz-worker-qdhgx   ocp-pm-bwmmz-worker-qdhgx   10.192.75.233    10.128.
 f5-openshift-hostsubnet.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/cis/f5-openshift-hostsubnet.yaml)
 
 ## Add the BIG-IP device to the OpenShift overlay network 
-```
-(tmos)# create net self 10.131.2.60/14 allow-service all vlan openshift_vxlan
-```
-Subnet comes from the creating the hostsubnet. Used .60 to be consistent with BigIP internal interface
+
+    (tmos)# create net self 10.131.2.60/14 allow-service all vlan openshift_vxlan
+
+Subnet from the **f5-server** hostsubnet create above. Used .60 to be consistent with Big-IP internal interface
+
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/diagram/2021-06-30_09-42-15.png)
 
 ## Create a new partition on your BIG-IP system
-```
-(tmos)# create auth partition openshift
-```
-This needs to match the partition in the controller configuration
 
-## Create CIS Controller, BIG-IP credentials and RBAC Authentication
+    (tmos)# create auth partition openshift
+
+This needs to match the partition in the controller configuration created by the CIS Operator
+
+## Installing the F5 Container Ingress Services Operator in OpenShift
+
+In OpenShift, CIS can be installed manually using a a yaml deployment manifest or using the Operator in OpenShift. The CIS Operator is a packaged deployment of CIS and will use Helm Charts to create the deployment. This user-guide provide additional information and examples when using the CIS Operator in OpenShift.
+
+Create BIG-IP login credentials for use with Operator Helm charts
+
+    oc create secret generic bigip-login  -n kube-system --from-literal=username=admin  --from-literal=password=<secret>
+
+Locate the F5 Container Ingress Services Operator in OpenShift OperatorHub as shown in the diagram below. Recommend search for F5 
+
+![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-10_12-59-30.png)
+
+Select the Operator to Install. In this example I am installing the latest Operator 1.7.0. Select the Install tab as shown in the diagram
+
+![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-10_13-20-27.png)
+
+Install the Operator and provide the installation mode, installed namespaces and approval strategy. In this user-guide and demo I am using the defaults
+
+![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-10_13-47-45.png)
+
+Operator will take a few minutes to install
+
+![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-10_13-50-10.png)
+
+Once installed select the View Operator tab
+
+![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-10_13-51-02.png)
+
+Now that the operator is installed you can create an instance of CIS. This will deploy CIS in OpenShift
+
+![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-14_14-07-36.png)
+
+Note that currently some fields may not be represented in form so its best to use the "YAML View" for full control of object creation. Select the "YAML View"
+
+![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-14_14-14-41.png)
+
+Enter requirement objects in the YAML View. Please add the recommended setting below:
+
+* Remove **agent as3** as this is default
+* Change repo image to **f5networks/cntr-ingress-svcs**. By default OpenShift will pull the image from Docker. 
+* Change the user to **registry.connect.redhat.com** so OpenShift will be pull the published image from the RedHat Ecosystem Catalog [repo](https://catalog.redhat.com/software/containers/f5networks/cntr-ingress-svcs/5ec7ad05ecb5246c0903f4cf)
 
 ```
-args: [
-        "--bigip-username=$(BIGIP_USERNAME)",
-        "--bigip-password=$(BIGIP_PASSWORD)",
-        # Replace with the IP address or hostname of your BIG-IP device
-        "--bigip-url=192.168.200.83",
-        # Replace with the name of the BIG-IP partition you want to manage
-        "--bigip-partition=openshift",
-        "--pool-member-type=cluster",
-        # Replace with the path to the BIG-IP VXLAN connected to the
-        # OpenShift HostSubnet
-        "--openshift-sdn-name=/Common/openshift_vxlan",
-        "--manage-routes=true",
-        "--namespace=f5demo",
-        "--route-vserver-addr=10.192.75.107",
-        "--log-level=DEBUG",
-        # Self-signed cert
-        "--insecure=true",
-        "--agent=as3"
-       ]
+apiVersion: cis.f5.com/v1
+kind: F5BigIpCtlr
+metadata:
+  name: f5-server
+  namespace: openshift-operators
+spec:
+  args:
+    log_as3_response: true
+    manage_routes: true
+    log_level: DEBUG
+    route_vserver_addr: 10.192.125.65
+    bigip_partition: OpenShift
+    openshift_sdn_name: /Common/openshift_vxlan
+    bigip_url: 10.192.125.60
+    insecure: true
+    pool-member-type: cluster
+  bigip_login_secret: bigip-login
+  image:
+    pullPolicy: Always
+    repo: f5networks/cntr-ingress-svcs
+    user: registry.connect.redhat.com
+  namespace: kube-system
+  rbac:
+    create: true
+  resources: {}
+  serviceAccount:
+    create: true
+  version: latest
 ```
-```
-oc create secret generic bigip-login --namespace kube-system --from-literal=username=admin --from-literal=password=f5PME123
-oc create serviceaccount bigip-ctlr -n kube-system
-oc create -f f5-kctlr-openshift-clusterrole.yaml
-oc create -f f5-k8s-bigip-ctlr-openshift.yaml
-oc adm policy add-cluster-role-to-user cluster-admin -z bigip-ctlr -n kube-system
-```
-## Delete kubernetes bigip container connecter, authentication and RBAC
-```
-oc delete serviceaccount bigip-ctlr -n kube-system
-oc delete -f f5-kctlr-openshift-clusterrole.yaml
-oc delete -f f5-k8s-bigip-ctlr-openshift.yaml
-oc delete secret bigip-login -n kube-system
-```
-## Create container f5-demo-app-route
-```
-oc create -f f5-demo-app-route-deployment.yaml -n f5demo
-oc create -f f5-demo-app-route-service.yaml -n f5demo
-oc create -f f5-demo-app-route-basic.yaml -n f5demo
-oc create -f f5-demo-app-route-balance.yaml -n f5demo
-oc create -f f5-demo-app-route-edge-ssl.yaml -n f5demo
-oc create -f f5-demo-app-route-reencrypt-ssl.yaml -n f5demo
-oc create -f f5-demo-app-route-passthrough-ssl.yaml -n f5demo
-oc create -f f5-demo-app-route-waf.yaml -n f5demo
-oc create -f f5-demo-app-route-ab.yaml -n f5demo
-```
-Please look for example files in my repo
 
-## Delete container f5-demo-app-route
-```
-oc delete -f f5-demo-app-route-deployment.yaml -n f5demo
-oc delete -f f5-demo-app-route-service.yaml -n f5demo
-oc delete -f f5-demo-app-route-basic.yaml -n f5demo
-oc delete -f f5-demo-app-route-balance.yaml -n f5demo
-oc delete -f f5-demo-app-route-edge-ssl.yaml -n f5demo
-oc delete -f f5-demo-app-route-reencrypt-ssl.yaml -n f5demo
-oc delete -f f5-demo-app-route-passthrough-ssl.yaml -n f5demo
-oc delete -f f5-demo-app-route-waf.yaml -n f5demo
-oc delete -f f5-demo-app-route-ab.yaml -n f5demo
-``` 
-## Enable logging for AS3
-```
-oc get pod -n kube-system
-oc log -f f5-server-### -n kube-system | grep -i 'as3'
-```
+Select the Create tab
+
+![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-14_14-38-24.png)
+
+Validate CIS deployment. Select Workloads/Deployments 
+
+![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-14_14-42-54.png)
+
+Select the **f5-bigip-ctlr-operator** to see more details on the CIS deployment. Also validate the CIS deployment image
+
+![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-14_14-45-08.png)
