@@ -157,3 +157,11 @@ Select the **f5-bigip-ctlr-operator** to see more details on the CIS deployment.
 
 ## Installing the Demo App in OpenShift
 
+Deploy demo app in OpenShift. This could be done using the OpenShift UI or CLI. In this guide i use the CLI. Demo app repo available below 
+
+```
+# oc create -f demo-app/
+deployment.apps/f5-demo created
+service/f5-demo created
+```
+demo-app [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/cis/f5-openshift-hostsubnet.yaml)
