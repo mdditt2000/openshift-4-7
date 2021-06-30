@@ -192,8 +192,8 @@ f5-demo-route-basic [repo](https://github.com/mdditt2000/openshift-4-7/tree/mast
 
 Validate the route via the OpenShift UI under the Networking/Routes
 
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/diagram/2021-06-30_13-54-10.png)
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/diagram/2021-06-30_13-59-43.png)
 
-Validate the route via the OpenShift UI under the Networking/Routes
+Validate the route via the BIG-IP
 
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/diagram/2021-06-30_13-54-10.png)
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/diagram/2021-06-30_14-00-53.png)
