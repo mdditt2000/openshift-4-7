@@ -16,7 +16,6 @@ Since CIS is using the AS3 declarative API we need the AS3 extension installed o
 * Install AS3 on BIG-IP
 https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/userguide/installation.html
 
-
 ## Create a BIG-IP VXLAN tunnel
 
 ```
@@ -45,18 +44,11 @@ ocp-pm-bwmmz-worker-qdhgx   ocp-pm-bwmmz-worker-qdhgx   10.192.75.233    10.128.
 ```
 f5-openshift-hostsubnet.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/cis/f5-openshift-hostsubnet.yaml)
 
-## Create a BIG-IP VXLAN tunnel
-
-## create net tunnels vxlan vxlan-mp flooding-type multipoint
+## Add the BIG-IP device to the OpenShift overlay network 
 ```
-(tmos)# create net tunnels vxlan vxlan-mp flooding-type multipoint
-(tmos)# create net tunnels tunnel openshift_vxlan key 0 profile vxlan-mp local-address 192.168.200.83
+(tmos)# create net self 10.131.2.60/14 allow-service all vlan openshift_vxlan
 ```
-## Add the BIG-IP device to the OpenShift overlay network
-```
-(tmos)# create net self 10.131.0.83/14 allow-service all vlan openshift_vxlan
-```
-Subnet comes from the creating the hostsubnets. Used .83 to be consistent with BigIP internal interface
+Subnet comes from the creating the hostsubnet. Used .60 to be consistent with BigIP internal interface
 
 ## Create a new partition on your BIG-IP system
 ```
