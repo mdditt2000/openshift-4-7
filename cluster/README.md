@@ -57,7 +57,6 @@ ocp-pm-bwmmz-master-2       ocp-pm-bwmmz-master-2       10.192.75.230   10.128.0
 ocp-pm-bwmmz-worker-9ch4b   ocp-pm-bwmmz-worker-9ch4b   10.192.75.234   10.129.2.0/23
 ocp-pm-bwmmz-worker-lws6s   ocp-pm-bwmmz-worker-lws6s   10.192.75.235   10.131.0.0/23
 ocp-pm-bwmmz-worker-qdhgx   ocp-pm-bwmmz-worker-qdhgx   10.192.75.233   10.128.2.0/23
-
 ```
 
 f5-openshift-hostsubnet.yaml [repo](https://github.com/mdditt2000/openshift-4-7/tree/master/cluster/cis)
@@ -128,7 +127,7 @@ Now that the operator is installed you can create an instance of CIS. This will 
 
 ![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-14_14-07-36.png)
 
-### Step 8:
+### Step 8: Create two instances of the F5BigIpCtlr
 
 Note that currently some fields may not be represented in form so its best to use the "YAML View" for full control of object creation. Select the "YAML View"
 
@@ -136,15 +135,18 @@ Note that currently some fields may not be represented in form so its best to us
 
 Enter requirement objects in the YAML View. Please add the recommended setting below:
 
+* Change the f5-server name to **f5-server-01** and **f5-server-02**
 * Remove **agent as3** as this is default
 * Change repo image to **f5networks/cntr-ingress-svcs**. By default OpenShift will pull the image from Docker. 
 * Change the user to **registry.connect.redhat.com** so OpenShift will be pull the published image from the RedHat Ecosystem Catalog [repo](https://catalog.redhat.com/software/containers/f5networks/cntr-ingress-svcs/5ec7ad05ecb5246c0903f4cf)
+
+Instance f5-server-01
 
 ```
 apiVersion: cis.f5.com/v1
 kind: F5BigIpCtlr
 metadata:
-  name: f5-server
+  name: f5-server-01
   namespace: openshift-operators
 spec:
   args:
@@ -171,11 +173,42 @@ spec:
   version: latest
 ```
 
+Instance f5-server-02
+
+```
+apiVersion: cis.f5.com/v1
+kind: F5BigIpCtlr
+metadata:
+  name: f5-server-02
+  namespace: openshift-operators
+spec:
+  args:
+    log_as3_response: true
+    manage_routes: true
+    log_level: DEBUG
+    route_vserver_addr: 10.192.125.65
+    bigip_partition: OpenShift
+    openshift_sdn_name: /Common/openshift_vxlan
+    bigip_url: 10.192.125.61
+    insecure: true
+    pool-member-type: cluster
+  bigip_login_secret: bigip-login
+  image:
+    pullPolicy: Always
+    repo: f5networks/cntr-ingress-svcs
+    user: registry.connect.redhat.com
+  namespace: kube-system
+  rbac:
+    create: true
+  resources: {}
+  serviceAccount:
+    create: true
+  version: latest
+```
+
 Select the Create tab
 
-### Step 9:
-
-Validate CIS deployment. Select Workloads/Deployments 
+### Step 9: Validate CIS deployment. Select Workloads/Deployments 
 
 ![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-14_14-42-54.png)
 
@@ -183,9 +216,7 @@ Select the **f5-bigip-ctlr-operator** to see more details on the CIS deployment.
 
 ![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-14_14-45-08.png)
 
-## Installing the Demo App in OpenShift
-
-### Step 10:
+### Step 10: Installing the Demo App in OpenShift
 
 Deploy demo app in OpenShift. This could be done using the OpenShift UI or CLI. In this guide i use the CLI. Demo app repo available below 
 
