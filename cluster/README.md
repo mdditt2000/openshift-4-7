@@ -127,15 +127,15 @@ Now that the operator is installed you can create an instance of CIS. This will 
 
 ![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-14_14-07-36.png)
 
-### Step 8: Create two instances of the F5BigIpCtlr
+### Step 8: Create instance for f5-server-01
 
 Note that currently some fields may not be represented in form so its best to use the "YAML View" for full control of object creation. Select the "YAML View"
 
-![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-14_14-14-41.png)
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster/diagram/2021-07-06_14-52-52.png)
 
 Enter requirement objects in the YAML View. Please add the recommended setting below:
 
-* Change the f5-server name to **f5-server-01** and **f5-server-02**
+* Change the f5-server name to **f5-server-01**
 * Remove **agent as3** as this is default
 * Change repo image to **f5networks/cntr-ingress-svcs**. By default OpenShift will pull the image from Docker. 
 * Change the user to **registry.connect.redhat.com** so OpenShift will be pull the published image from the RedHat Ecosystem Catalog [repo](https://catalog.redhat.com/software/containers/f5networks/cntr-ingress-svcs/5ec7ad05ecb5246c0903f4cf)
