@@ -172,6 +172,7 @@ spec:
     create: true
   version: latest
 ```
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster/diagram/2021-07-06_14-52-52.png)
 
 Instance f5-server-02
 
@@ -205,6 +206,9 @@ spec:
     create: true
   version: latest
 ```
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster/diagram/2021-07-06_14-52-52.png)
+
+BLOCKED!!! 
 
 Select the Create tab
 
