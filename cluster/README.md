@@ -31,10 +31,9 @@ On bigip-01 create the VXLAN profile and tunnel
 (tmos)# create net tunnels tunnel openshift_vxlan key 0 profile vxlan-mp local-address 10.192.125.62 secondary-address 10.192.125.60 traffic-group traffic-group-1
 ```
 
-On bigip-02 create the VXLAN profile and tunnel. No need to create the profile is you sync the configuration
+On bigip-02 create the VXLAN tunnel
 
 ```
-(tmos)# create net tunnels vxlan vxlan-mp flooding-type multipoint
 (tmos)# create net tunnels tunnel openshift_vxlan key 0 profile vxlan-mp local-address 10.192.125.62 secondary-address 10.192.125.61 traffic-group traffic-group-1
 ```
 
