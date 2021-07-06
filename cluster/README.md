@@ -20,9 +20,7 @@ Since CIS is using the AS3 declarative API we need the AS3 extension installed o
 * Install AS3 on BIG-IP
 https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/userguide/installation.html
 
-## Create a BIG-IP VXLAN tunnel for OpenShift SDN for both BIG-IPs
-
-### Step 1:
+### Step 1: Create a VXLAN profile and tunnel
 
 On bigip-01 create the VXLAN profile and tunnel
 
@@ -39,7 +37,7 @@ On bigip-02 create the VXLAN tunnel
 ```
 ![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster/diagram/2021-07-06_13-08-24.png)
 
-### Step 2:
+### Step 2: Create a new OpenShift HostSubnet
 
 Create a host subnet for the BIP-IP. This will provide the subnet for creating the tunnel self-IP
 
@@ -61,15 +59,29 @@ ocp-pm-bwmmz-worker-lws6s   ocp-pm-bwmmz-worker-lws6s   10.192.75.235   10.131.0
 ocp-pm-bwmmz-worker-qdhgx   ocp-pm-bwmmz-worker-qdhgx   10.192.75.233   10.128.2.0/23
 ```
 
-f5-openshift-hostsubnet.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/cis/f5-openshift-hostsubnet.yaml)
+f5-openshift-hostsubnet.yaml [repo](https://github.com/mdditt2000/openshift-4-7/tree/master/cluster/cis)
 
-### Step 3:
+### Step 3: Create a self IP in the VXLAN
 
-    (tmos)# create net self 10.128.4.60/14 allow-service all vlan openshift_vxlan
+Create a self IP address in the VXLAN on each device. The subnet mask you assign to the self IP must match the one that the OpenShift SDN assigns to nodes. **Note** that is a /14 by default. Be sure to specify a floating traffic group (for example, traffic-group-1). Otherwise, the self IP will use the BIG-IP system’s default
 
-Subnet from the **f5-server** hostsubnet create above. Used .60 to be consistent with Big-IP internal interface
+On bigip-01 create the self IP from hostsubnets **f5-server-01**
+```
+(tmos)# create net self 10.128.4.60/14 allow-service all vlan openshift_vxlan
+```
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster/diagram/2021-07-06_13-08-24.png)
 
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/diagram/2021-06-30_09-42-15.png)
+On bigip-02 create the self IP from hostsubnets **f5-server-02**
+```
+(tmos)# create net self 10.128.4.60/14 allow-service all vlan openshift_vxlan
+```
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster/diagram/2021-07-06_13-08-24.png)
+
+On the active BIG-IP, create a floating IP address in the subnet assigned by the OpenShift SDN from from hostsubnets **f5-server-float**
+```
+(tmos)# create net self 10.129.2.81/14 allow-service default traffic-group traffic-group-1 vlan openshift_vxlan
+```
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster/diagram/2021-07-06_13-08-24.png)
 
 ## Create a new partition on your BIG-IP system
 
