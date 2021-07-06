@@ -43,20 +43,24 @@ On bigip-02 create the VXLAN tunnel
 
 Create a host subnet for the BIP-IP. This will provide the subnet for creating the tunnel self-IP
 
-    oc create -f f5-openshift-hostsubnet.yaml
+    oc create -f f5-openshift-hostsubnet-01.yaml
+    oc create -f f5-openshift-hostsubnet-02.yaml
+    oc create -f f5-openshift-hostsubnet-float.yaml
 
 ```
-# oc get hostsubnet
-NAME                        HOST                        HOST IP          SUBNET          EGRESS CIDRS   EGRESS IPS
-f5-server                   f5-server                   10.192.125.60   10.128.4.0/23
+# oc get hostsubnets
+NAME                        HOST                        HOST IP         SUBNET          EGRESS CIDRS   EGRESS IPS
+f5-server-01                f5-server                   10.192.125.60
+f5-server-02                f5-server                   10.192.125.61
+f5-server-float             f5-server                   10.192.125.62
 ocp-pm-bwmmz-master-0       ocp-pm-bwmmz-master-0       10.192.75.229   10.130.0.0/23
 ocp-pm-bwmmz-master-1       ocp-pm-bwmmz-master-1       10.192.75.231   10.129.0.0/23
 ocp-pm-bwmmz-master-2       ocp-pm-bwmmz-master-2       10.192.75.230   10.128.0.0/23
 ocp-pm-bwmmz-worker-9ch4b   ocp-pm-bwmmz-worker-9ch4b   10.192.75.234   10.129.2.0/23
 ocp-pm-bwmmz-worker-lws6s   ocp-pm-bwmmz-worker-lws6s   10.192.75.235   10.131.0.0/23
 ocp-pm-bwmmz-worker-qdhgx   ocp-pm-bwmmz-worker-qdhgx   10.192.75.233   10.128.2.0/23
-
 ```
+
 f5-openshift-hostsubnet.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/cis/f5-openshift-hostsubnet.yaml)
 
 ### Step 3:
