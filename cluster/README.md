@@ -48,15 +48,16 @@ Create a host subnet for the BIP-IP. This will provide the subnet for creating t
 ```
 # oc get hostsubnets
 NAME                        HOST                        HOST IP         SUBNET          EGRESS CIDRS   EGRESS IPS
-f5-server-01                f5-server                   10.192.125.60
-f5-server-02                f5-server                   10.192.125.61
-f5-server-float             f5-server                   10.192.125.62
+f5-server-01                f5-server-01                10.192.125.60   10.129.4.0/23
+f5-server-02                f5-server-02                10.192.125.61   10.130.4.0/23
+f5-server-float             f5-server-float             10.192.125.62   10.131.4.0/23
 ocp-pm-bwmmz-master-0       ocp-pm-bwmmz-master-0       10.192.75.229   10.130.0.0/23
 ocp-pm-bwmmz-master-1       ocp-pm-bwmmz-master-1       10.192.75.231   10.129.0.0/23
 ocp-pm-bwmmz-master-2       ocp-pm-bwmmz-master-2       10.192.75.230   10.128.0.0/23
 ocp-pm-bwmmz-worker-9ch4b   ocp-pm-bwmmz-worker-9ch4b   10.192.75.234   10.129.2.0/23
 ocp-pm-bwmmz-worker-lws6s   ocp-pm-bwmmz-worker-lws6s   10.192.75.235   10.131.0.0/23
 ocp-pm-bwmmz-worker-qdhgx   ocp-pm-bwmmz-worker-qdhgx   10.192.75.233   10.128.2.0/23
+
 ```
 
 f5-openshift-hostsubnet.yaml [repo](https://github.com/mdditt2000/openshift-4-7/tree/master/cluster/cis)
@@ -67,25 +68,23 @@ Create a self IP address in the VXLAN on each device. The subnet mask you assign
 
 On bigip-01 create the self IP from hostsubnets **f5-server-01**
 ```
-(tmos)# create net self 10.128.4.60/14 allow-service all vlan openshift_vxlan
+(tmos)# create net self 10.129.4.60/14 allow-service all vlan openshift_vxlan
 ```
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster/diagram/2021-07-06_13-08-24.png)
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster/diagram/2021-07-06_13-49-15.png)
 
 On bigip-02 create the self IP from hostsubnets **f5-server-02**
 ```
-(tmos)# create net self 10.128.4.60/14 allow-service all vlan openshift_vxlan
+(tmos)# create net self 10.130.4.61/14 allow-service all vlan openshift_vxlan
 ```
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster/diagram/2021-07-06_13-08-24.png)
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster/diagram/2021-07-06_13-50-21.png)
 
 On the active BIG-IP, create a floating IP address in the subnet assigned by the OpenShift SDN from from hostsubnets **f5-server-float**
 ```
-(tmos)# create net self 10.129.2.81/14 allow-service default traffic-group traffic-group-1 vlan openshift_vxlan
+(tmos)# create net self 10.131.4.62/14 allow-service default traffic-group traffic-group-1 vlan openshift_vxlan
 ```
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster/diagram/2021-07-06_13-08-24.png)
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster/diagram/2021-07-06_14-12-10.png)
 
-## Create a new partition on your BIG-IP system
-
-### Step 4:
+### Step 4: Create a new partition on your BIG-IP system
 
     (tmos)# create auth partition OpenShift
 
