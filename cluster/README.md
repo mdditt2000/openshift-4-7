@@ -107,14 +107,7 @@ Create both bigip-01 and bigip-02 yaml deployment manifests
 
 ### Step 6: Validate CIS deployment. Select Workloads/Deployments
 
-![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-14_14-42-54.png)
-
-
-
-
-Select the **f5-bigip-ctlr-operator** to see more details on the CIS deployment. Also validate the CIS deployment image
-
-![diagram](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/operator/diagrams/2021-06-14_14-45-08.png)
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster/diagram/2021-07-07_15-30-56.png)
 
 ### Step 10: Installing the Demo App in OpenShift
 
