@@ -89,19 +89,11 @@ On the active BIG-IP, create a floating IP address in the subnet assigned by the
 
 This needs to match the partition in the controller configuration created by the CIS Operator
 
-## Installing the F5 Container Ingress Services OpenShift
+## Installing the F5 Container Ingress Services Operator in OpenShift
 
-In OpenShift, CIS can be installed manually using a a yaml deployment manifest or using the Operator in OpenShift. The CIS Operator is a packaged deployment of CIS and will use Helm Charts to create the deployment. This user-guide provide will be creating CIS using a yaml deployment manifest and not the CIS Operator due to GitHub [issue](https://github.com/F5Networks/k8s-bigip-ctlr/issues/1813)
+In OpenShift, CIS can be installed manually using a a yaml deployment manifest or using the Operator in OpenShift. The CIS Operator is a packaged deployment of CIS and will use Helm Charts to create the deployment. This user-guide provide additional information and examples when using the CIS Operator in OpenShift
 
-### Step 5: Create CIS Controller, BIG-IP credentials and RBAC Authentication
-
-Create both bigip-01 and bigip-02 yaml deployment manifests
-
-```
-
-```
-
-
+### Step 5:
 
 Create BIG-IP login credentials for use with Operator Helm charts
 
