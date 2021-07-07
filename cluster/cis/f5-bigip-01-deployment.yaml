@@ -15,8 +15,8 @@
         # permissions
         serviceAccountName: bigip-ctlr
         containers:
-          - name: registry.connect.redhat.com
-            image: f5networks/cntr-ingress-svcs
+          - name: f5networks/cntr-ingress-svcs
+            image: registry.connect.redhat.com/f5networks/cntr-ingress-svcs:latest
             env:
               - name: BIGIP_USERNAME
                 valueFrom:
