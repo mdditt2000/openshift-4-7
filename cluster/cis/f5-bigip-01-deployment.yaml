@@ -7,7 +7,7 @@
     replicas: 1
     selector:
     matchLabels:
-      app: k8s-bigip-ctlr
+      app: f5-bigip-01
     template:
       metadata:
         name: k8s-bigip-ctlr
