@@ -1,7 +1,7 @@
   apiVersion: extensions/v1beta1
   kind: Deployment
   metadata:
-    name: f5-ose-bigip-01-ctrl
+    name: 8s-bigip-ctlr
     namespace: kube-system
   spec:
     replicas: 1
