@@ -1,7 +1,7 @@
   apiVersion: apps/v1
   kind: Deployment
   metadata:
-    name: k8s-bigip-ctlr-deployment-60
+    name: ocp-bigip-ctlr-deployment-01
     namespace: kube-system
   spec:
     replicas: 1
@@ -39,20 +39,14 @@
             args: [
               "--bigip-username=$(BIGIP_USERNAME)",
               "--bigip-password=$(BIGIP_PASSWORD)",
-              # Replace with the IP address or hostname of your BIG-IP device
-              "--bigip-url=192.168.200.82",
-              # Replace with the name of the BIG-IP partition you want to manage
+              "--bigip-url=10.192.125.60",
               "--bigip-partition=OpenShift",
               "--pool-member-type=cluster",
-              # Replace with the path to the BIG-IP VXLAN connected to the
-              # OpenShift HostSubnet
               "--openshift-sdn-name=/Common/openshift_vxlan",
               "--manage-routes=true",
               "--route-vserver-addr=10.192.125.65",
-              # Logging level
               "--log-level=DEBUG",
               "--log-as3-response=true",
-              # Self-signed cert
               "--insecure=true",
               ]
         imagePullSecrets:
