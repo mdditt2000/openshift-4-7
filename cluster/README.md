@@ -10,7 +10,7 @@ Demo on YouTube [video]()
 
 * OpenShift 4.7 on vSphere with installer-provisioned infrastructure
 * CIS 2.5
-* AS3: 3.28
+* AS3: 3.29
 * BIG-IP 16.0.1.1 cluster
 
 ## Prerequisite
@@ -103,6 +103,7 @@ Create both bigip-01 and bigip-02 yaml deployment manifests
 # oc create -f f5-openshift-clusterrole.yaml
 # oc create -f f5-bigip-01-deployment.yaml
 # oc create -f f5-bigip-02-deployment.yaml
+# oc adm policy add-cluster-role-to-user cluster-admin -z bigip-ctlr -n kube-system
 ```
 
 ### Step 6: Validate CIS deployment. Select Workloads/Deployments
