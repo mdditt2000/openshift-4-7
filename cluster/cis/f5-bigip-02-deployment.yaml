@@ -1,15 +1,15 @@
   apiVersion: apps/v1
   kind: Deployment
   metadata:
-    name: f5-bigip-02
+    name: k8s-bigip-ctlr-deployment
     namespace: kube-system
   spec:
     replicas: 1
     template:
       metadata:
-        name: f5-bigip-02
+        name: k8s-bigip-ctlr-deployment
         labels:
-          app: f5-bigip-02
+          app: k8s-bigip-ctlr-deployment
       spec:
         # Name of the Service Account bound to a Cluster Role with the required
         # permissions
