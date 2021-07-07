@@ -1,13 +1,13 @@
   apiVersion: apps/v1
   kind: Deployment
   metadata:
-    name: f5-bigip-01
+    name: k8s-bigip-ctlr
     namespace: kube-system
   spec:
     replicas: 1
     selector:
     matchLabels:
-      app: f5-bigip-01
+      app: k8s-bigip-ctlr
     template:
       metadata:
         name: k8s-bigip-ctlr
