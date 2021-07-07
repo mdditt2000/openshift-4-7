@@ -1,7 +1,7 @@
   apiVersion: apps/v1
   kind: Deployment
   metadata:
-    name: f5-bigip-01
+    name: f5-ose-bigip-01-ctrl
     namespace: kube-system
   spec:
     replicas: 1
@@ -15,7 +15,7 @@
         # permissions
         serviceAccountName: bigip-ctlr
         containers:
-          - name: f5networks/cntr-ingress-svcs
+          - name: k8s-bigip-ctlr
             image: registry.connect.redhat.com/f5networks/cntr-ingress-svcs:latest
             env:
               - name: BIGIP_USERNAME
