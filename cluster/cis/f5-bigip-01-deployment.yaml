@@ -1,21 +1,24 @@
   apiVersion: apps/v1
   kind: Deployment
   metadata:
-    name: f5-bigip-ctrl-01
+    name: f5-bigip-01
     namespace: kube-system
   spec:
     replicas: 1
+    selector:
+    matchLabels:
+      app: k8s-bigip-ctlr
     template:
       metadata:
-        name: f5-bigip-ctrl-01
+        name: k8s-bigip-ctlr
         labels:
-          app: f5-bigip-ctrl-01
+          app: k8s-bigip-ctlr
       spec:
         # Name of the Service Account bound to a Cluster Role with the required
         # permissions
         serviceAccountName: bigip-ctlr
         containers:
-          - name: f5-bigip-ctrl-01
+          - name: cntr-ingress-svcs
             image: registry.connect.redhat.com/f5networks/cntr-ingress-svcs:latest
             env:
               - name: BIGIP_USERNAME
