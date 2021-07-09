@@ -13,9 +13,10 @@ Demo on YouTube [video]()
 * AS3: 3.28
 * BIG-IP 16.0.1.1
 
-## Prerequisite
+## Prerequisite before creating the OCP 4.7 Cluster
 
-* Modify the networkType to OVNKubernetes in the install-config.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/install-config.yaml)
+* Modify the networkType to OVNKubernetes in the install-config.yaml [manifests](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/install-config.yaml)
+* Create a stub manifest file cluster-network-03-config.yml for the advanced network configuration with hybridOverlayConfig objects [manifests](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/cluster-network-03-config.yaml)
 
 More information on configuring hybrid networking, review the OpenShift documentation [docs](https://docs.openshift.com/container-platform/4.7/networking/ovn_kubernetes_network_provider/configuring-hybrid-networking.html)
 
