@@ -15,7 +15,9 @@ Demo on YouTube [video]()
 
 ## Prerequisite
 
-* Modify the networkType to OVNKubernetes in the install-config.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/cis/f5-openshift-hostsubnet.yaml)
+* Modify the networkType to OVNKubernetes in the install-config.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/install-config.yaml)
+
+More information on configuring hybrid networking, review the OpenShift documentation [docs](https://docs.openshift.com/container-platform/4.7/networking/ovn_kubernetes_network_provider/configuring-hybrid-networking.html)
 
 Since CIS is using the AS3 declarative API we need the AS3 extension installed on BIG-IP. Follow the link to install AS3
  
