@@ -41,6 +41,7 @@
               "--bigip-password=$(BIGIP_PASSWORD)",
               "--bigip-url=10.192.125.60",
               "--bigip-partition=OpenShift",
+              "--namespace=default"
               "--pool-member-type=cluster",
               #"--openshift-sdn-name=/Common/openshift_vxlan",
               "--manage-routes=true",
