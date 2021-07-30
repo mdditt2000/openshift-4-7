@@ -42,7 +42,7 @@
               "--bigip-url=10.192.125.60",
               "--bigip-partition=OpenShift",
               "--pool-member-type=cluster",
-              "--openshift-sdn-name=/Common/openshift_vxlan",
+              #"--openshift-sdn-name=/Common/openshift_vxlan",
               "--manage-routes=true",
               "--route-vserver-addr=10.192.125.65",
               "--log-level=DEBUG",
