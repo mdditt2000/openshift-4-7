@@ -121,7 +121,7 @@ https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/usergui
 
 ### Procedure
 
-**Step 1:** Create install-config.yaml
+**Step 1:** Create tunnel profile
 
     (tmos)# create net tunnels vxlan vxlan-mp flooding-type multipoint
 
