@@ -14,7 +14,7 @@ install-config.yaml.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob
 
 ### Procedure
 
-* Step 1: Create install-config
+* **Step 1:** Create install-config
 
 ```
 # ./openshift-install create install-config --dir=ipi
