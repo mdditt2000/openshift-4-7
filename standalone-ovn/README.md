@@ -8,7 +8,7 @@ RedHat documents the installation of **OVN-K8S advanced networking** in the [spe
 
 ### Prerequisites
 
-* You have created the install-config.yaml file with the modifications. When creating the install-config.yaml, modify the default networkType: OpenShiftSDN to networkType: OVNKubernetes
+You have created the install-config.yaml file with the modifications. When creating the install-config.yaml, modify the default networkType: OpenShiftSDN to networkType: OVNKubernetes
 
 install-config.yaml.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/install-config.yaml)
 
