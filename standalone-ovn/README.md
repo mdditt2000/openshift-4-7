@@ -105,12 +105,183 @@ INFO Time elapsed: 26m50s
 #
 ```
 
-## Environment Parameters
+**Step 5:** Validate **defaultNetwork: hybridOverlayConfig** was configured correctly during OpenShift installation
 
-* OpenShift 4.8 on vSphere with Installer-Provisioned Infrastructure (IPI)
-* CIS 2.5
-* AS3: 3.28
-* BIG-IP 16.0.1.1
+```
+# oc --kubeconfig /openshift/ipi/auth/kubeconfig get networks.operator.openshift.io cluster -o yaml
+apiVersion: operator.openshift.io/v1
+kind: Network
+metadata:
+  annotations:
+    networkoperator.openshift.io/ovn-cluster-initiator: 10.192.125.160
+  creationTimestamp: "2021-08-03T06:50:15Z"
+  generation: 53
+  name: cluster
+  resourceVersion: "22347"
+  uid: 8942ef7d-31e7-4dde-8873-685d9231b891
+spec:
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
+  defaultNetwork:
+    ovnKubernetesConfig:
+      genevePort: 6081
+      hybridOverlayConfig: {}
+      mtu: 1400
+      policyAuditConfig:
+        destination: "null"
+        maxFileSize: 50
+        rateLimit: 20
+        syslogFacility: local0
+    type: OVNKubernetes
+  deployKubeProxy: false
+  disableMultiNetwork: false
+  disableNetworkDiagnostics: false
+  logLevel: Normal
+  managementState: Managed
+  observedConfig: null
+  operatorLogLevel: Normal
+  serviceNetwork:
+  - 172.30.0.0/16
+  unsupportedConfigOverrides: null
+  useMultiNetworkPolicy: false
+status:
+  conditions:
+  - lastTransitionTime: "2021-08-03T06:52:08Z"
+    status: "False"
+    type: ManagementStateDegraded
+  - lastTransitionTime: "2021-08-03T06:52:08Z"
+    status: "False"
+    type: Degraded
+  - lastTransitionTime: "2021-08-03T06:52:08Z"
+    status: "True"
+    type: Upgradeable
+  - lastTransitionTime: "2021-08-03T07:03:02Z"
+    status: "False"
+    type: Progressing
+  - lastTransitionTime: "2021-08-03T06:54:50Z"
+    status: "True"
+    type: Available
+  readyReplicas: 0
+  version: 4.9.0-0.nightly-2021-07-29-103526
+```
+
+**Step 6:** Add OVN-Kubernetes advanced networking CNI specific annotations
+
+You need to add OVN-Kubernetes advanced networking CNI specific annotations to all namespace that CIS is monitoring and configuring on BIG-IP. This user-guide uses the **namespace default**
+
+```
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: default
+  annotations:
+    k8s.ovn.org/hybrid-overlay-external-gw: 10.142.2.60 #self ip of Vxlan tunnel
+    k8s.ovn.org/hybrid-overlay-vtep: 10.192.125.60 #BIG-IP interface address rotatable to the OpenShift nodes
+```
+
+    # oc apply -f ocp-exgw.yaml
+
+cluster-network-03-config.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/cluster-network-03-config.yaml)
+
+
+
+
+[root@ocp-installer standalone-ovn]# oc create -f demo-app/
+deployment.apps/f5-demo created
+service/f5-demo created
+[root@ocp-installer standalone-ovn]# oc get pod
+NAME                      READY   STATUS    RESTARTS   AGE
+f5-demo-9498f95fc-5fnj5   1/1     Running   0          34s
+f5-demo-9498f95fc-62g4l   1/1     Running   0          34s
+f5-demo-9498f95fc-qdl8b   1/1     Running   0          34s
+f5-demo-9498f95fc-zswjd   1/1     Running   0          34s
+[root@ocp-installer standalone-ovn]# oc describe pod f5-demo-9498f95fc-5fnj5
+Name:         f5-demo-9498f95fc-5fnj5
+Namespace:    default
+Priority:     0
+Node:         ocp-pm-2zxp2-worker-9bn9s/10.192.125.165
+Start Time:   Tue, 03 Aug 2021 00:27:45 -0700
+Labels:       app=f5-demo
+              pod-template-hash=9498f95fc
+Annotations:  k8s.ovn.org/hybrid-overlay-external-gw: 10.142.2.60
+              k8s.ovn.org/hybrid-overlay-vtep: 10.192.125.60
+              k8s.ovn.org/pod-networks:
+                {"default":{"ip_addresses":["10.128.2.18/23"],"mac_address":"0a:58:0a:80:02:12","gateway_ips":["10.128.2.3"],"routes":[{"dest":"10.128.0.0...
+              k8s.v1.cni.cncf.io/network-status:
+                [{
+                    "name": "ovn-kubernetes",
+                    "interface": "eth0",
+                    "ips": [
+                        "10.128.2.18"
+                    ],
+                    "mac": "0a:58:0a:80:02:12",
+                    "default": true,
+                    "dns": {}
+                }]
+              k8s.v1.cni.cncf.io/networks-status:
+                [{
+                    "name": "ovn-kubernetes",
+                    "interface": "eth0",
+                    "ips": [
+                        "10.128.2.18"
+                    ],
+                    "mac": "0a:58:0a:80:02:12",
+                    "default": true,
+                    "dns": {}
+                }]
+Status:       Running
+IP:           10.128.2.18
+IPs:
+  IP:           10.128.2.18
+Controlled By:  ReplicaSet/f5-demo-9498f95fc
+Containers:
+  f5-demo:
+    Container ID:   cri-o://51c6fff708dca44b5448f6604b3aff0ae8da3d98c3bead99a4b4098ed52902c7
+    Image:          f5devcentral/f5-demo-httpd
+    Image ID:       docker.io/f5devcentral/f5-demo-httpd@sha256:1c86ba346fa766356365f2f05bc3be6c2cdd5eb69552ce3867091c9a38d6ee2b
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Tue, 03 Aug 2021 00:27:56 -0700
+    Ready:          True
+    Restart Count:  0
+    Environment:
+      service_name:  f5-demo
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-rmggv (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  kube-api-access-rmggv:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+    ConfigMapName:           openshift-service-ca.crt
+    ConfigMapOptional:       <nil>
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason          Age   From               Message
+  ----    ------          ----  ----               -------
+  Normal  Scheduled       48s   default-scheduler  Successfully assigned default/f5-demo-9498f95fc-5fnj5 to ocp-pm-2zxp2-worker-9bn9s
+  Normal  AddedInterface  46s   multus             Add eth0 [10.128.2.18/23] from ovn-kubernetes
+  Normal  Pulling         46s   kubelet            Pulling image "f5devcentral/f5-demo-httpd"
+  Normal  Pulled          39s   kubelet            Successfully pulled image "f5devcentral/f5-demo-httpd" in 7.503713793s
+  Normal  Created         38s   kubelet            Created container f5-demo
+  Normal  Started         38s   kubelet            Started container f5-demo
+[root@ocp-installer standalone-ovn]#
+
+----
+
 
 Since CIS is using the AS3 declarative API we need the AS3 extension installed on BIG-IP. Follow the link to install AS3
  
@@ -147,7 +318,7 @@ Diagram of all the BIG-IP self-ip addresses
 
 ## Create a partition on BIG-IP for CIS to manage
 
-### Step 4:
+### Procedure
 
     (tmos)# create auth partition OpenShift
 
