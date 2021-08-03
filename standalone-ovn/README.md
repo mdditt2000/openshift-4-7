@@ -14,11 +14,9 @@ RedHat documents the installation of **OVN-K8S advanced networking** in the [spe
 
 You have created the **install-config.yaml** file with the required modifications. When creating the install-config.yaml, change the default networkType: **OpenShiftSDN** to networkType: **OVNKubernetes**
 
-install-config.yaml.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/install-config.yaml)
-
 ### Procedure
 
-**Step 1:** Create install-config
+**Step 1:** Create install-config.yaml
 
 ```
 # ./openshift-install create install-config --dir=ipi
@@ -38,6 +36,7 @@ INFO Connecting to vCenter vcsa7-pme.f5demo.com
 ? Pull Secret [? for help] ......
 INFO Install-Config created in: ipi
 ```
+install-config.yaml.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/install-config.yaml)
 
 **Step 2:** Create manifests
 
@@ -54,6 +53,8 @@ cluster-dns-02-config.yml                  cluster-network-02-config.yml        
 ```
 
 **Step 3:** Copy cluster-network-03-config.yaml to manifests directory
+
+
 
 ```
 # cat cluster-network-03-config.yaml
@@ -73,13 +74,8 @@ spec:
     type: OVNKubernetes
 
 # cp cluster-network-03-config.yaml /openshift/ipi/manifests/
-# cd /openshift/ipi/manifests/
-# ls
-04-openshift-machine-config-operator.yaml  cluster-infrastructure-02-config.yml  cluster-network-03-config.yaml   kube-cloud-config.yaml                    openshift-kubevirt-infra-namespace.yaml
-cloud-provider-config.yaml                 cluster-ingress-02-config.yml         cluster-proxy-01-config.yaml     kube-system-configmap-root-ca.yaml
-cluster-config.yaml                        cluster-network-01-crd.yml            cluster-scheduler-02-config.yml  machine-config-server-tls-secret.yaml
-cluster-dns-02-config.yml                  cluster-network-02-config.yml         cvo-overrides.yaml               openshift-config-secret-pull-secret.yaml
 ```
+install-config.yaml.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/cluster-network-03-config.yaml)
 
 **Step 4:** Create Cluster
 

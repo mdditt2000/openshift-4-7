@@ -29,13 +29,13 @@ platform:
   vsphere:
     apiVIP: 10.192.125.101
     cluster: OCP-PM
-    datacenter: PME-LAB-SJC
+    datacenter: PME-LAB
     defaultDatastore: datastore1 (3)
-    ingressVIP: 10.192.125.110
+    ingressVIP: 10.192.125.102
     network: VM Network
     password: secret
     username: administrator@f5demo.com
-    vCenter: vcsa-pme.f5demo.com
+    vCenter: vcsa7-pme.f5demo.com
 publish: External
 pullSecret: removed
 #
