@@ -54,7 +54,9 @@ cluster-dns-02-config.yml                  cluster-network-02-config.yml        
 
 **Step 3:** Copy cluster-network-03-config.yaml to manifests directory
 
+RedHat documentation for [configuring hybrid networking with OVN-Kubernetes](https://docs.openshift.com/container-platform/4.8/networking/ovn_kubernetes_network_provider/configuring-hybrid-networking.html#configuring-hybrid-ovnkubernetes_configuring-hybrid-networking)
 
+Create a stub manifest file for the advanced network configuration that is named cluster-network-03-config.yml in the <installation_directory>/manifests/ directory. The defaultNetwork: hybridOverlayConfig: {} is required
 
 ```
 # cat cluster-network-03-config.yaml
@@ -79,6 +81,8 @@ install-config.yaml.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob
 
 **Step 4:** Create Cluster
 
+You ready to create the OpenShift cluster
+
 ```
 # ./openshift-install create cluster --dir=ipi
 INFO Consuming Worker Machines from target directory
@@ -101,35 +105,33 @@ INFO Time elapsed: 26m50s
 #
 ```
 
-## Environment parameters
+## Environment Parameters
 
-* OpenShift 4.7 on vSphere with installer-provisioned infrastructure
+* OpenShift 4.8 on vSphere with Installer-Provisioned Infrastructure (IPI)
 * CIS 2.5
 * AS3: 3.28
 * BIG-IP 16.0.1.1
-
-## Prerequisite before creating the OCP 4.7 Cluster
-
-* Modify the **networkType** to **OVNKubernetes** in the install-config.yaml [manifests](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/install-config.yaml)
-* Create a stub manifest file cluster-network-03-config.yml for the advanced network configuration with **hybridOverlayConfig** objects [manifests](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/cluster-network-03-config.yaml)
-
-More information on configuring hybrid networking, review the OpenShift documentation [docs](https://docs.openshift.com/container-platform/4.7/networking/ovn_kubernetes_network_provider/configuring-hybrid-networking.html)
 
 Since CIS is using the AS3 declarative API we need the AS3 extension installed on BIG-IP. Follow the link to install AS3
  
 * Install AS3 on BIG-IP
 https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/userguide/installation.html
 
-## Create a BIG-IP VXLAN tunnel for OpenShift SDN
+## Create a BIG-IP VXLAN tunnel for OVN-Kubernetes Advanced Networking
 
-### Step 1:
+### Procedure
 
-```
-(tmos)# create net tunnels vxlan vxlan-mp flooding-type multipoint
-(tmos)# create net tunnels tunnel openshift_vxlan key 0 profile vxlan-mp local-address 10.192.125.60
-```
+**Step 1:** Create install-config.yaml
 
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/diagram/2021-06-29_15-42-04.png)
+    (tmos)# create net tunnels vxlan vxlan-mp flooding-type multipoint
+
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-18-36.png)
+
+    (tmos)# create net tunnels tunnel openshift_vxlan key 4097 profile vxlan-mp local-address 10.192.125.60
+
+**Note:** OpenShift uses 4097(VNI) for VxLAN communication
+
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-20-34.png)
 
 ### Step 2:
 
