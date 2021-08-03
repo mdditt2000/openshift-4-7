@@ -185,8 +185,6 @@ metadata:
 cluster-network-03-config.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/cluster-network-03-config.yaml)
 
 
-
-
 [root@ocp-installer standalone-ovn]# oc create -f demo-app/
 deployment.apps/f5-demo created
 service/f5-demo created
