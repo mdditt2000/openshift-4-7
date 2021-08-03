@@ -166,7 +166,64 @@ status:
   version: 4.9.0-0.nightly-2021-07-29-103526
 ```
 
-**Step 6:** Add OVN-Kubernetes advanced networking CNI specific annotations
+## Create a BIG-IP VXLAN tunnel for OVN-Kubernetes Advanced Networking
+
+### Procedure
+
+**Step 1:** Create tunnel profile
+
+    (tmos)# create net tunnels vxlan vxlan-mp flooding-type multipoint
+
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-18-36.png)
+
+    (tmos)# create net tunnels tunnel openshift_vxlan key 4097 profile vxlan-mp local-address 10.192.125.60
+
+**Note:** OpenShift uses 4097(VNI) for VxLAN communication
+
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-20-34.png)
+
+### Step 2: Create self-ip for CNI
+
+    (tmos)# create net self 10.142.2.60/12 allow-service all vlan openshift_vxlan
+
+**Note:** Use self IP range (10.142.2.60/12) which supernets the OpenShift cluster network i.e 10.128.0.0/14 to differentiate the VxLAN and GENEVE communication.
+
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-39-20.png)
+
+Diagram of all the BIG-IP self-ip addresses
+
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-40-06.png)
+
+## Create a partition on BIG-IP for CIS to manage
+
+### Procedure
+
+    (tmos)# create auth partition OpenShift
+
+This needs to match the partition in the controller configuration created by the CIS Operator
+
+## Create CIS Controller, BIG-IP credentials and RBAC Authentication
+
+### Procedure
+
+Since CIS is using the AS3 declarative API we need the AS3 extension installed on BIG-IP. Follow the link to install AS3
+ 
+* Install AS3 on BIG-IP
+https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/userguide/installation.html
+
+Create f5-bigip-deployment manifests
+
+```
+# oc create secret generic bigip-login --namespace kube-system --from-literal=username=admin --from-literal=password=<secret>
+# oc create serviceaccount bigip-ctlr -n kube-system
+# oc create -f f5-openshift-clusterrole.yaml
+# oc create -f f5-bigip-deployment.yaml
+# oc adm policy add-cluster-role-to-user cluster-admin -z bigip-ctlr -n kube-system
+```
+
+## Add OVN-Kubernetes advanced networking CNI specific annotations
+
+### Procedure
 
 You need to add OVN-Kubernetes advanced networking CNI specific annotations to all namespace that CIS is monitoring and configuring on BIG-IP. This user-guide uses the **namespace default**
 
@@ -182,9 +239,13 @@ metadata:
 
     # oc apply -f ocp-exgw.yaml
 
-cluster-network-03-config.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/cluster-network-03-config.yaml)
+ocp-exgw.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/ocp-exgw.yaml)
 
+## Installing the Demo App in OpenShift and validate the OVN-Kubernetes Advanced Networking Annotations
 
+### Procedure
+
+```
 [root@ocp-installer standalone-ovn]# oc create -f demo-app/
 deployment.apps/f5-demo created
 service/f5-demo created
@@ -277,66 +338,7 @@ Events:
   Normal  Created         38s   kubelet            Created container f5-demo
   Normal  Started         38s   kubelet            Started container f5-demo
 [root@ocp-installer standalone-ovn]#
-
-----
-
-
-Since CIS is using the AS3 declarative API we need the AS3 extension installed on BIG-IP. Follow the link to install AS3
- 
-* Install AS3 on BIG-IP
-https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/userguide/installation.html
-
-## Create a BIG-IP VXLAN tunnel for OVN-Kubernetes Advanced Networking
-
-### Procedure
-
-**Step 1:** Create tunnel profile
-
-    (tmos)# create net tunnels vxlan vxlan-mp flooding-type multipoint
-
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-18-36.png)
-
-    (tmos)# create net tunnels tunnel openshift_vxlan key 4097 profile vxlan-mp local-address 10.192.125.60
-
-**Note:** OpenShift uses 4097(VNI) for VxLAN communication
-
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-20-34.png)
-
-### Step 2: Create self-ip for CNI
-
-    (tmos)# create net self 10.142.2.60/12 allow-service all vlan openshift_vxlan
-
-**Note:** Use self IP range (10.142.2.60/12) which supernets the OpenShift cluster network i.e 10.128.0.0/14 to differentiate the VxLAN and GENEVE communication.
-
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-39-20.png)
-
-Diagram of all the BIG-IP self-ip addresses
-
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-40-06.png)
-
-## Create a partition on BIG-IP for CIS to manage
-
-### Procedure
-
-    (tmos)# create auth partition OpenShift
-
-This needs to match the partition in the controller configuration created by the CIS Operator
-
-## Create CIS Controller, BIG-IP credentials and RBAC Authentication
-
-### Procedure
-
-Create f5-bigip-deployment manifests
-
 ```
-# oc create secret generic bigip-login --namespace kube-system --from-literal=username=admin --from-literal=password=<secret>
-# oc create serviceaccount bigip-ctlr -n kube-system
-# oc create -f f5-openshift-clusterrole.yaml
-# oc create -f f5-bigip-deployment.yaml
-# oc adm policy add-cluster-role-to-user cluster-admin -z bigip-ctlr -n kube-system
-```
-
-## Installing the Demo App in OpenShift
 
 ### Step 10:
 
