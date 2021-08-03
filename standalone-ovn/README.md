@@ -4,7 +4,7 @@ This user guide is create to document OpenShift 4.8 integration of CIS and stand
 
 RedHat documents this feature in the [specifying advanced network configuration sections](https://docs.openshift.com/container-platform/4.8/installing/installing_vsphere/installing-vsphere-installer-provisioned-network-customizations.html#modifying-nwoperator-config-startup_installing-vsphere-installer-provisioned-network-customizations) of the OpenShift 4.8 install process. Based on the following note from RedHat is very important to follow the installation of OVN-K8S Hybrid Overlay Feature when installing OpenShift. 
 
-![diagram]()
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_13-12-08.png)
 
 
 ![diagram]()
