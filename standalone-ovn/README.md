@@ -8,13 +8,13 @@ RedHat documents the installation of **OVN-K8S advanced networking** in the [spe
 
 ### Prerequisites
 
-You have created the **install-config.yaml** file with the required modifications. When creating the install-config.yaml, modify the default networkType: **OpenShiftSDN** to networkType: **OVNKubernetes**
+You have created the **install-config.yaml** file with the required modifications. When creating the install-config.yaml, change the default networkType: **OpenShiftSDN** to networkType: **OVNKubernetes**
 
 install-config.yaml.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/install-config.yaml)
 
 ### Procedure
 
-* **Step 1:** Create install-config
+**Step 1:** Create install-config
 
 ```
 # ./openshift-install create install-config --dir=ipi
@@ -35,7 +35,7 @@ INFO Connecting to vCenter vcsa7-pme.f5demo.com
 INFO Install-Config created in: ipi
 ```
 
-* Step 2: Create manifests
+**Step 2:** Create manifests
 
 ```
 # ./openshift-install create manifests --dir=ipi
@@ -49,7 +49,7 @@ cluster-config.yaml                        cluster-network-01-crd.yml           
 cluster-dns-02-config.yml                  cluster-network-02-config.yml         kube-cloud-config.yaml           openshift-kubevirt-infra-namespace.yaml
 ```
 
-* Step 4: Copy cluster-network-03-config.yaml to manifests directory
+**Step 3:** Copy cluster-network-03-config.yaml to manifests directory
 
 ```
 # cat cluster-network-03-config.yaml
@@ -77,7 +77,7 @@ cluster-config.yaml                        cluster-network-01-crd.yml           
 cluster-dns-02-config.yml                  cluster-network-02-config.yml         cvo-overrides.yaml               openshift-config-secret-pull-secret.yaml
 ```
 
-* Step 4: Create Cluster
+**Step 4:** Create Cluster
 
 ```
 # ./openshift-install create cluster --dir=ipi
