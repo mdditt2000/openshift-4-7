@@ -241,21 +241,29 @@ metadata:
 
 ocp-exgw.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/ocp-exgw.yaml)
 
-## Installing the Demo App in OpenShift and validate the OVN-Kubernetes Advanced Networking Annotations
+## Installing the Demo App in OpenShift and validate the OVN-Kubernetes advanced networking annotations
 
 ### Procedure
 
+Deploy demo app in OpenShift
+
+    # oc create -f demo-app/
+
+Validated deployed demo apps in OpenShift
+
 ```
-[root@ocp-installer standalone-ovn]# oc create -f demo-app/
-deployment.apps/f5-demo created
-service/f5-demo created
-[root@ocp-installer standalone-ovn]# oc get pod
+# oc get pod
 NAME                      READY   STATUS    RESTARTS   AGE
 f5-demo-9498f95fc-5fnj5   1/1     Running   0          34s
 f5-demo-9498f95fc-62g4l   1/1     Running   0          34s
 f5-demo-9498f95fc-qdl8b   1/1     Running   0          34s
 f5-demo-9498f95fc-zswjd   1/1     Running   0          34s
-[root@ocp-installer standalone-ovn]# oc describe pod f5-demo-9498f95fc-5fnj5
+```
+
+Validated OVN-Kubernetes advanced networking annotations applied to the deployed application pod. As you can see below the deployed pod has added annotations for **k8s.ovn.org/hybrid-overlay-external-gw: 10.142.2.60** using the BIG-IP vtep **k8s.ovn.org/hybrid-overlay-vtep: 10.192.125.60**
+
+```
+# oc describe pod f5-demo-9498f95fc-5fnj5
 Name:         f5-demo-9498f95fc-5fnj5
 Namespace:    default
 Priority:     0
@@ -337,34 +345,15 @@ Events:
   Normal  Pulled          39s   kubelet            Successfully pulled image "f5devcentral/f5-demo-httpd" in 7.503713793s
   Normal  Created         38s   kubelet            Created container f5-demo
   Normal  Started         38s   kubelet            Started container f5-demo
-[root@ocp-installer standalone-ovn]#
+#
 ```
-
-### Step 10:
-
-Deploy demo app in OpenShift. This could be done using the OpenShift UI or CLI. In this guide i use the CLI. Demo app repo available below 
-
-```
-# oc create -f demo-app/
-deployment.apps/f5-demo created
-service/f5-demo created
-```
-demo-app [repo](https://github.com/mdditt2000/openshift-4-7/tree/master/standalone/demo-app)
-
-You can validate the demo app install via the OpenShift UI
-
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/diagram/2021-06-30_11-39-52.png)
 
 ## Create Route for Ingress traffic to Demo App
 
-### Step 11:
-
 Create basic route for Ingress traffic from BIG-IP to Demo App 
 
-```
-# oc create -f f5-demo-route-basic.yaml
-route.route.openshift.io/f5-demo-route-basic created
-```
+    # oc create -f f5-demo-route-basic.yaml
+
 
 f5-demo-route-basic [repo](https://github.com/mdditt2000/openshift-4-7/tree/master/standalone/route)
 
