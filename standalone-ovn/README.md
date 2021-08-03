@@ -1,11 +1,104 @@
 # OpenShift 4.8 and F5 Container Ingress Services (CIS) User-Guide for Standalone BIG-IP using OVN-Kubernetes Advanced Networking
 
-This user guide is create to document OpenShift 4.8 integration of CIS and standalone BIG-IP using OVN-Kubernetes advanced networking. This user guide provides configuration for a standalone BIG-IP configuration with **OVN-Kubernetes hybrid overlay feature(VxLAN)**. OVN-Kubernetes hybrid overlay uses the GENEVE protocol for EAST/WEST traffic within the OpenShift Cluster and VxLAN tunnels to network BIG-IP devices. 
+This user guide is create to document OpenShift 4.8 integration of CIS and standalone BIG-IP using OVN-Kubernetes advanced networking. This user guide provides configuration for a standalone BIG-IP with **OVN-Kubernetes hybrid overlay feature(VxLAN)**. OVN-Kubernetes hybrid overlay uses the GENEVE protocol for EAST/WEST traffic within the OpenShift Cluster and VxLAN tunnels to network BIG-IP devices. 
 
-RedHat documents the installation of **OVN-K8S advanced networking** in the [specifying advanced network configuration sections](https://docs.openshift.com/container-platform/4.8/installing/installing_vsphere/installing-vsphere-installer-provisioned-network-customizations.html#modifying-nwoperator-config-startup_installing-vsphere-installer-provisioned-network-customizations) of the install process. Based on the following note from RedHat, its very important to follow the installation of OVN-K8S Hybrid Overlay Feature when installing OpenShift. Modification, migration cannot be applied once OpenShift is already installed.
+RedHat documents the installation of **OVN-K8S advanced networking** in the [specifying advanced network configuration sections](https://docs.openshift.com/container-platform/4.8/installing/installing_vsphere/installing-vsphere-installer-provisioned-network-customizations.html#modifying-nwoperator-config-startup_installing-vsphere-installer-provisioned-network-customizations) of the install process. Based on the following note from RedHat, its very important to follow the installation of OVN-Kubernetes Hybrid Overlay Feature when installing OpenShift. Modification, migration cannot be applied once OpenShift is already installed.
 
 ![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_13-12-08.png)
 
+### Prerequisites
+
+* You have created the install-config.yaml file with the modifications. When creating the install-config.yaml, modify the default networkType: OpenShiftSDN to networkType: OVNKubernetes
+
+install-config.yaml.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/install-config.yaml)
+
+### Procedure
+
+* Step 1: Create install-config
+
+```
+# ./openshift-install create install-config --dir=ipi
+? Platform vsphere
+? vCenter vcsa7-pme.f5demo.com
+? Username administrator@f5demo.com
+? Password [? for help] *********
+INFO Connecting to vCenter vcsa7-pme.f5demo.com
+? Datacenter PME-LAB
+? Cluster OCP-PM
+? Default Datastore datastore1 (3)
+? Network VM Network
+? Virtual IP Address for API 10.192.125.101
+? Virtual IP Address for Ingress 10.192.125.102
+? Base Domain f5demo.com
+? Cluster Name ocp-pm
+? Pull Secret [? for help] *******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************INFO Install-Config created in: ipi
+```
+
+* Step 2: Create manifests
+
+```
+# ./openshift-install create manifests --dir=ipi
+INFO Consuming Install Config from target directory
+INFO Manifests created in: ipi/manifests and ipi/openshift
+
+# ls
+04-openshift-machine-config-operator.yaml  cluster-infrastructure-02-config.yml  cluster-proxy-01-config.yaml     kube-system-configmap-root-ca.yaml
+cloud-provider-config.yaml                 cluster-ingress-02-config.yml         cluster-scheduler-02-config.yml  machine-config-server-tls-secret.yaml
+cluster-config.yaml                        cluster-network-01-crd.yml            cvo-overrides.yaml               openshift-config-secret-pull-secret.yaml
+cluster-dns-02-config.yml                  cluster-network-02-config.yml         kube-cloud-config.yaml           openshift-kubevirt-infra-namespace.yaml
+```
+
+* Step 4: Copy cluster-network-03-config.yaml to manifests directory
+
+```
+# cat cluster-network-03-config.yaml
+apiVersion: operator.openshift.io/v1
+kind: Network
+metadata:
+  name: cluster
+spec:
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
+  serviceNetwork:
+  - 172.30.0.0/16
+  defaultNetwork:
+    ovnKubernetesConfig:
+      hybridOverlayConfig: {}
+    type: OVNKubernetes
+
+# cp cluster-network-03-config.yaml /openshift/ipi/manifests/
+# cd /openshift/ipi/manifests/
+# ls
+04-openshift-machine-config-operator.yaml  cluster-infrastructure-02-config.yml  cluster-network-03-config.yaml   kube-cloud-config.yaml                    openshift-kubevirt-infra-namespace.yaml
+cloud-provider-config.yaml                 cluster-ingress-02-config.yml         cluster-proxy-01-config.yaml     kube-system-configmap-root-ca.yaml
+cluster-config.yaml                        cluster-network-01-crd.yml            cluster-scheduler-02-config.yml  machine-config-server-tls-secret.yaml
+cluster-dns-02-config.yml                  cluster-network-02-config.yml         cvo-overrides.yaml               openshift-config-secret-pull-secret.yaml
+```
+
+* Step 4: Create Cluster
+
+```
+# ./openshift-install create cluster --dir=ipi
+INFO Consuming Worker Machines from target directory
+INFO Consuming OpenShift Install (Manifests) from target directory
+INFO Consuming Openshift Manifests from target directory
+INFO Consuming Master Machines from target directory
+INFO Consuming Common Manifests from target directory
+INFO Creating infrastructure resources...
+INFO Waiting up to 20m0s for the Kubernetes API at https://api.ocp-pm.f5demo.com:6443...
+INFO API v1.21.1+8268f88 up
+INFO Waiting up to 30m0s for bootstrapping to complete...
+INFO Destroying the bootstrap resources...
+INFO Waiting up to 40m0s for the cluster at https://api.ocp-pm.f5demo.com:6443 to initialize...
+INFO Waiting up to 10m0s for the openshift-console route to be created...
+INFO Install complete!
+INFO To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/openshift/ipi/auth/kubeconfig'
+INFO Access the OpenShift web-console here: https://console-openshift-console.apps.ocp-pm.f5demo.com
+INFO Login to the console with user: "kubeadmin", and password: "secret"
+INFO Time elapsed: 26m50s
+#
+```
 
 ![diagram]()
 
