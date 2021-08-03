@@ -139,7 +139,11 @@ https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/usergui
 
 **Note:** Use self IP range (10.142.2.60/12) which supernets the OpenShift cluster network i.e 10.128.0.0/14 to differentiate the VxLAN and GENEVE communication.
 
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/diagram/2021-06-30_09-42-15.png)
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-39-20.png)
+
+Diagram of all the BIG-IP self-ip addresses
+
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-40-06.png)
 
 ## Create a partition on BIG-IP for CIS to manage
 
