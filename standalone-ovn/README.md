@@ -77,7 +77,7 @@ spec:
 
 # cp cluster-network-03-config.yaml /openshift/ipi/manifests/
 ```
-install-config.yaml.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/cluster-network-03-config.yaml)
+cluster-network-03-config.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/cluster-network-03-config.yaml)
 
 **Step 4:** Create Cluster
 
