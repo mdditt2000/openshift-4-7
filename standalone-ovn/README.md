@@ -133,35 +133,15 @@ https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/usergui
 
 ![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-20-34.png)
 
-### Step 2:
+### Step 2: Create self-ip for CNI
 
-Create a host subnet for the BIP-IP. This will provide the subnet for creating the tunnel self-IP
+    (tmos)# create net self 10.142.2.60/12 allow-service all vlan openshift_vxlan
 
-    oc create -f f5-openshift-hostsubnet.yaml
-
-```
-# oc get hostsubnet
-NAME                        HOST                        HOST IP          SUBNET          EGRESS CIDRS   EGRESS IPS
-f5-server                   f5-server                   10.192.125.60   10.128.4.0/23
-ocp-pm-bwmmz-master-0       ocp-pm-bwmmz-master-0       10.192.75.229   10.130.0.0/23
-ocp-pm-bwmmz-master-1       ocp-pm-bwmmz-master-1       10.192.75.231   10.129.0.0/23
-ocp-pm-bwmmz-master-2       ocp-pm-bwmmz-master-2       10.192.75.230   10.128.0.0/23
-ocp-pm-bwmmz-worker-9ch4b   ocp-pm-bwmmz-worker-9ch4b   10.192.75.234   10.129.2.0/23
-ocp-pm-bwmmz-worker-lws6s   ocp-pm-bwmmz-worker-lws6s   10.192.75.235   10.131.0.0/23
-ocp-pm-bwmmz-worker-qdhgx   ocp-pm-bwmmz-worker-qdhgx   10.192.75.233   10.128.2.0/23
-
-```
-f5-openshift-hostsubnet.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/cis/f5-openshift-hostsubnet.yaml)
-
-### Step 3:
-
-    (tmos)# create net self 10.128.4.60/14 allow-service all vlan openshift_vxlan
-
-Subnet from the **f5-server** hostsubnet create above. Used .60 to be consistent with Big-IP internal interface
+**Note:** Use self IP range (10.142.2.60/12) which supernets the OpenShift cluster network i.e 10.128.0.0/14 to differentiate the VxLAN and GENEVE communication.
 
 ![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/diagram/2021-06-30_09-42-15.png)
 
-## Create a new partition on your BIG-IP system
+## Create a partition on BIG-IP for CIS to manage
 
 ### Step 4:
 
