@@ -1,4 +1,4 @@
-# OpenShift 4.8 and F5 Container Ingress Services (CIS) User-Guide for Standalone BIG-IP using OVN-K8S Hybrid Overlay Feature
+# OpenShift 4.8 and F5 Container Ingress Services (CIS) User-Guide for Standalone BIG-IP using OVN-K8S Advanced Networking
 
 This user guide is create to document OpenShift 4.8 integration of CIS and standalone BIG-IP using OVN-K8S advanced networking. This user guide provides configuration for a standalone BIG-IP configuration with **OVN-K8S hybrid overlay feature(VxLAN)**. OVN-K8S hybrid overlay uses the GENEVE protocol for EAST/WEST traffic within the OpenShift Cluster and VxLAN tunnels to network BIG-IP devices. 
 
