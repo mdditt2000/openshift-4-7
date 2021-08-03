@@ -1,6 +1,6 @@
-# OpenShift 4.8 and F5 Container Ingress Services (CIS) User-Guide for Standalone BIG-IP using OVN-K8S Advanced Networking
+# OpenShift 4.8 and F5 Container Ingress Services (CIS) User-Guide for Standalone BIG-IP using OVN-Kubernetes Advanced Networking
 
-This user guide is create to document OpenShift 4.8 integration of CIS and standalone BIG-IP using OVN-K8S advanced networking. This user guide provides configuration for a standalone BIG-IP configuration with **OVN-K8S hybrid overlay feature(VxLAN)**. OVN-K8S hybrid overlay uses the GENEVE protocol for EAST/WEST traffic within the OpenShift Cluster and VxLAN tunnels to network BIG-IP devices. 
+This user guide is create to document OpenShift 4.8 integration of CIS and standalone BIG-IP using OVN-Kubernetes advanced networking. This user guide provides configuration for a standalone BIG-IP configuration with **OVN-Kubernetes hybrid overlay feature(VxLAN)**. OVN-Kubernetes hybrid overlay uses the GENEVE protocol for EAST/WEST traffic within the OpenShift Cluster and VxLAN tunnels to network BIG-IP devices. 
 
 RedHat documents the installation of **OVN-K8S advanced networking** in the [specifying advanced network configuration sections](https://docs.openshift.com/container-platform/4.8/installing/installing_vsphere/installing-vsphere-installer-provisioned-network-customizations.html#modifying-nwoperator-config-startup_installing-vsphere-installer-provisioned-network-customizations) of the install process. Based on the following note from RedHat, its very important to follow the installation of OVN-K8S Hybrid Overlay Feature when installing OpenShift. Modification, migration cannot be applied once OpenShift is already installed.
 
