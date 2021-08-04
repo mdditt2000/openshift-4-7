@@ -365,4 +365,4 @@ Validate the route via the OpenShift UI under the Networking/Routes
 
 Validate the route via the BIG-IP
 
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone/diagram/2021-06-30_14-00-53.png)
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_22-39-35.png)
