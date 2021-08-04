@@ -221,6 +221,8 @@ Create f5-bigip-deployment manifests
 # oc adm policy add-cluster-role-to-user cluster-admin -z bigip-ctlr -n kube-system
 ```
 
+cis-deployment [repo](https://github.com/mdditt2000/openshift-4-7/tree/master/standalone-ovn/cis)
+
 ## Add OVN-Kubernetes advanced networking CNI specific annotations
 
 ### Procedure
