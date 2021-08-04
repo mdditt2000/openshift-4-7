@@ -126,7 +126,7 @@ spec:
   defaultNetwork:
     ovnKubernetesConfig:
       genevePort: 6081
-      hybridOverlayConfig: {}
+      hybridOverlayConfig: {} --- Shows the correct configuration for hybrid networking
       mtu: 1400
       policyAuditConfig:
         destination: "null"
@@ -145,25 +145,6 @@ spec:
   - 172.30.0.0/16
   unsupportedConfigOverrides: null
   useMultiNetworkPolicy: false
-status:
-  conditions:
-  - lastTransitionTime: "2021-08-03T06:52:08Z"
-    status: "False"
-    type: ManagementStateDegraded
-  - lastTransitionTime: "2021-08-03T06:52:08Z"
-    status: "False"
-    type: Degraded
-  - lastTransitionTime: "2021-08-03T06:52:08Z"
-    status: "True"
-    type: Upgradeable
-  - lastTransitionTime: "2021-08-03T07:03:02Z"
-    status: "False"
-    type: Progressing
-  - lastTransitionTime: "2021-08-03T06:54:50Z"
-    status: "True"
-    type: Available
-  readyReplicas: 0
-  version: 4.9.0-0.nightly-2021-07-29-103526
 ```
 
 ## Create a BIG-IP VXLAN tunnel for OVN-Kubernetes Advanced Networking
