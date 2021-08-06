@@ -245,6 +245,10 @@ Create f5-bigip-deployment manifests for both BIG-IP devices
 
 cis-deployment [repo](https://github.com/mdditt2000/openshift-4-7/tree/master/cluster-ovn/cis)
 
+Validate that both CIS POD are running. You can use the OpenShift dashboard to view the deployments
+
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster-ovn/diagram/2021-08-06_14-51-12.png)
+
 ## Add OVN-Kubernetes advanced networking CNI specific annotations
 
 ### Procedure
@@ -257,8 +261,8 @@ kind: Namespace
 metadata:
   name: default
   annotations:
-    k8s.ovn.org/hybrid-overlay-external-gw: 10.142.2.60 #self ip of Vxlan tunnel
-    k8s.ovn.org/hybrid-overlay-vtep: 10.192.125.60 #BIG-IP interface address rotatable to the OpenShift nodes
+    k8s.ovn.org/hybrid-overlay-external-gw: 10.142.6.60 #self ip of Vxlan tunnel
+    k8s.ovn.org/hybrid-overlay-vtep: 10.192.125.62 #BIG-IP interface address rotatable to the OpenShift nodes
 ```
 
     # oc apply -f ocp-exgw.yaml
