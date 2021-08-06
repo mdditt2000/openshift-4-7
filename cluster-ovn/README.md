@@ -267,7 +267,7 @@ metadata:
 
     # oc apply -f ocp-exgw.yaml
 
-ocp-exgw.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/openshift/ocp-exgw.yaml)
+ocp-exgw.yaml [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster-ovn/openshift/ocp-exgw.yaml)
 
 ## Installing the Demo App in OpenShift and validate the OVN-Kubernetes advanced networking annotations
 
@@ -291,7 +291,7 @@ f5-demo-9498f95fc-zswjd   1/1     Running   0          34s
 Validated OVN-Kubernetes advanced networking annotations applied to the deployed application pod. As you can see below the deployed pod has added annotations for **k8s.ovn.org/hybrid-overlay-external-gw: 10.142.2.60** using the BIG-IP vtep **k8s.ovn.org/hybrid-overlay-vtep: 10.192.125.60**
 
 ```
-# oc describe pod f5-demo-9498f95fc-5fnj5
+[root@ocp-installer openshift]# oc describe pod f5-demo-9498f95fc-5fnj5
 Name:         f5-demo-9498f95fc-5fnj5
 Namespace:    default
 Priority:     0
@@ -299,8 +299,8 @@ Node:         ocp-pm-2zxp2-worker-9bn9s/10.192.125.165
 Start Time:   Tue, 03 Aug 2021 00:27:45 -0700
 Labels:       app=f5-demo
               pod-template-hash=9498f95fc
-Annotations:  k8s.ovn.org/hybrid-overlay-external-gw: 10.142.2.60
-              k8s.ovn.org/hybrid-overlay-vtep: 10.192.125.60
+Annotations:  k8s.ovn.org/hybrid-overlay-external-gw: 10.142.6.60
+              k8s.ovn.org/hybrid-overlay-vtep: 10.192.125.62
               k8s.ovn.org/pod-networks:
                 {"default":{"ip_addresses":["10.128.2.18/23"],"mac_address":"0a:58:0a:80:02:12","gateway_ips":["10.128.2.3"],"routes":[{"dest":"10.128.0.0...
               k8s.v1.cni.cncf.io/network-status:
@@ -327,53 +327,6 @@ Annotations:  k8s.ovn.org/hybrid-overlay-external-gw: 10.142.2.60
                 }]
 Status:       Running
 IP:           10.128.2.18
-IPs:
-  IP:           10.128.2.18
-Controlled By:  ReplicaSet/f5-demo-9498f95fc
-Containers:
-  f5-demo:
-    Container ID:   cri-o://51c6fff708dca44b5448f6604b3aff0ae8da3d98c3bead99a4b4098ed52902c7
-    Image:          f5devcentral/f5-demo-httpd
-    Image ID:       docker.io/f5devcentral/f5-demo-httpd@sha256:1c86ba346fa766356365f2f05bc3be6c2cdd5eb69552ce3867091c9a38d6ee2b
-    Port:           80/TCP
-    Host Port:      0/TCP
-    State:          Running
-      Started:      Tue, 03 Aug 2021 00:27:56 -0700
-    Ready:          True
-    Restart Count:  0
-    Environment:
-      service_name:  f5-demo
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-rmggv (ro)
-Conditions:
-  Type              Status
-  Initialized       True
-  Ready             True
-  ContainersReady   True
-  PodScheduled      True
-Volumes:
-  kube-api-access-rmggv:
-    Type:                    Projected (a volume that contains injected data from multiple sources)
-    TokenExpirationSeconds:  3607
-    ConfigMapName:           kube-root-ca.crt
-    ConfigMapOptional:       <nil>
-    DownwardAPI:             true
-    ConfigMapName:           openshift-service-ca.crt
-    ConfigMapOptional:       <nil>
-QoS Class:                   BestEffort
-Node-Selectors:              <none>
-Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
-                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
-Events:
-  Type    Reason          Age   From               Message
-  ----    ------          ----  ----               -------
-  Normal  Scheduled       48s   default-scheduler  Successfully assigned default/f5-demo-9498f95fc-5fnj5 to ocp-pm-2zxp2-worker-9bn9s
-  Normal  AddedInterface  46s   multus             Add eth0 [10.128.2.18/23] from ovn-kubernetes
-  Normal  Pulling         46s   kubelet            Pulling image "f5devcentral/f5-demo-httpd"
-  Normal  Pulled          39s   kubelet            Successfully pulled image "f5devcentral/f5-demo-httpd" in 7.503713793s
-  Normal  Created         38s   kubelet            Created container f5-demo
-  Normal  Started         38s   kubelet            Started container f5-demo
-#
 ```
 
 ## Create Route for Ingress traffic to Demo App
@@ -382,8 +335,7 @@ Create basic route for Ingress traffic from BIG-IP to Demo App
 
     # oc create -f f5-demo-route-basic.yaml
 
-
-f5-demo-route-basic [repo](https://github.com/mdditt2000/openshift-4-7/tree/master/standalone/route)
+f5-demo-route-basic [repo](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster-ovn/route/f5-demo-route-basic.yaml)
 
 Validate the route via the OpenShift UI under the Networking/Routes
 
