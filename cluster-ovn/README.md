@@ -151,15 +151,15 @@ spec:
 
 ### Procedure
 
-**Step 1:** Create tunnel profile ON bigip-01 and bigip-02
+**Step 1:** Create tunnel profile on bigip-01 and bigip-02
 
-* bigip-01 and manually sync
+* **bigip-01** and manually sync
 
     (tmos)# create net tunnels vxlan vxlan-mp flooding-type multipoint
 
 ![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster-ovn/diagram/2021-08-03_14-18-36.png)
 
-* bigip-01
+* **bigip-01**
 
     (tmos)# create net tunnels tunnel openshift_vxlan key 4097 profile vxlan-mp local-address 10.192.125.62 secondary-address 10.192.125.60 traffic-group traffic-group-1
 
@@ -167,7 +167,7 @@ spec:
 
 ![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster-ovn/diagram/2021-08-06_14-06-18.png)
 
-* bigip-02
+* **bigip-02**
 
     (tmos)# create net tunnels tunnel openshift_vxlan key 4097 profile vxlan-mp local-address 10.192.125.62 secondary-address 10.192.125.61 traffic-group traffic-group-1
 
