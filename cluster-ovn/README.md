@@ -1,8 +1,8 @@
-# OpenShift 4.8 and F5 Container Ingress Services (CIS) User-Guide for Standalone BIG-IP using OVN-Kubernetes Advanced Networking
+# OpenShift 4.8 and F5 Container Ingress Services (CIS) User-Guide for Cluster BIG-IP using OVN-Kubernetes Advanced Networking
 
-This user guide is create to document OpenShift 4.8 integration of CIS and standalone BIG-IP using OVN-Kubernetes advanced networking. This user guide provides configuration for a standalone BIG-IP with **OVN-Kubernetes hybrid overlay feature(VxLAN)**. OVN-Kubernetes hybrid overlay uses the GENEVE protocol for EAST/WEST traffic within the OpenShift Cluster and VxLAN tunnels to network BIG-IP devices.
+This user guide is create to document OpenShift 4.8 integration of CIS and Cluster BIG-IP using OVN-Kubernetes advanced networking. This user guide provides configuration for a Cluster BIG-IP with **OVN-Kubernetes hybrid overlay feature(VxLAN)**. OVN-Kubernetes hybrid overlay uses the GENEVE protocol for EAST/WEST traffic within the OpenShift Cluster and VxLAN tunnels to network BIG-IP devices.
 
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_23-17-10.png)
+![diagram]()
 
 Demo on YouTube [video]()
 
@@ -147,21 +147,33 @@ spec:
   useMultiNetworkPolicy: false
 ```
 
-## Create a BIG-IP VXLAN tunnel for OVN-Kubernetes Advanced Networking
+## Create a VXLAN tunnel for OVN-Kubernetes Advanced Networking on the BIG-IP devices
 
 ### Procedure
 
-**Step 1:** Create tunnel profile
+**Step 1:** Create tunnel profile ON bigip-01 and bigip-02
+
+* bigip-01 and manually sync
 
     (tmos)# create net tunnels vxlan vxlan-mp flooding-type multipoint
 
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-18-36.png)
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster-ovn/diagram/2021-08-03_14-18-36.png)
 
-    (tmos)# create net tunnels tunnel openshift_vxlan key 4097 profile vxlan-mp local-address 10.192.125.60
+* bigip-01
+
+    (tmos)# create net tunnels tunnel openshift_vxlan key 4097 profile vxlan-mp local-address 10.192.125.62 secondary-address 10.192.125.60 traffic-group traffic-group-1
 
 **Note:** OpenShift uses 4097(VNI) for VxLAN communication
 
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-20-34.png)
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster-ovn/diagram/2021-08-06_14-06-18.png)
+
+* bigip-02
+
+    (tmos)# create net tunnels tunnel openshift_vxlan key 4097 profile vxlan-mp local-address 10.192.125.62 secondary-address 10.192.125.61 traffic-group traffic-group-1
+
+**Note:** OpenShift uses 4097(VNI) for VxLAN communication
+
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster-ovn/diagram/2021-08-06_14-06-50.png)
 
 ### Step 2: Create self-ip for CNI
 
