@@ -153,7 +153,7 @@ spec:
 
 **Step 1:** Create tunnel profile on bigip-01 and bigip-02
 
-* **bigip-01** and manually sync
+* **active device** and manually sync
 
     (tmos)# create net tunnels vxlan vxlan-mp flooding-type multipoint
 
@@ -175,7 +175,7 @@ spec:
 
 ![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster-ovn/diagram/2021-08-06_14-06-50.png)
 
-### Step 2: Create self-ip for CNI on the BIG-IP devices
+### Step 2: Create self-ip for CNI IP Addresses on the BIG-IP devices
 
 * **bigip-01**
 
@@ -195,13 +195,25 @@ spec:
 
 Diagram of all the BIG-IP self-ip addresses on the BIG-IP devices
 
+### Step 3: Create floating self-ip for CNI IP Addresses on the BIG-IP devices
+
+* **active device** and manually sync
+
+On the active device, create floating IP in the network which supernets the OpenShift cluster network. Make sure to specify a floating traffic group (traffic-group-1)
+
+    (tmos)# create net self 10.142.6.60/12 allow-service all traffic-group traffic-group-1 vlan openshift_vxlan
+
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster-ovn/diagram/2021-08-06_14-33-20.png)
+
+Diagram of self-ip addresses on the BIG-IP devices
+
 * **bigip-01**
 
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-40-06.png)
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster-ovn/diagram/2021-08-06_14-35-28.png)
 
 * **bigip-02**
 
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-40-06.png)
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster-ovn/diagram/2021-08-06_14-35-55.png)
 
 ## Create a partition on BIG-IP for CIS to manage
 
