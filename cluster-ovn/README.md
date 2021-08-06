@@ -232,13 +232,14 @@ Since CIS is using the AS3 declarative API we need the AS3 extension installed o
 * Install AS3 on BIG-IP
 https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/userguide/installation.html
 
-Create f5-bigip-deployment manifests
+Create f5-bigip-deployment manifests for both BIG-IP devices
 
 ```
 # oc create secret generic bigip-login --namespace kube-system --from-literal=username=admin --from-literal=password=<secret>
 # oc create serviceaccount bigip-ctlr -n kube-system
 # oc create -f f5-openshift-clusterrole.yaml
-# oc create -f f5-bigip-deployment.yaml
+# oc create -f f5-bigip-01-deployment.yaml
+# oc create -f f5-bigip-02-deployment.yaml
 # oc adm policy add-cluster-role-to-user cluster-admin -z bigip-ctlr -n kube-system
 ```
 
