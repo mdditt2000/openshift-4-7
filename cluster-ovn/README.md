@@ -175,15 +175,31 @@ spec:
 
 ![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster-ovn/diagram/2021-08-06_14-06-50.png)
 
-### Step 2: Create self-ip for CNI
+### Step 2: Create self-ip for CNI on the BIG-IP devices
+
+* **bigip-01**
 
     (tmos)# create net self 10.142.2.60/12 allow-service all vlan openshift_vxlan
 
-**Note:** Use self IP range (10.142.2.60/12) which supernets the OpenShift cluster network i.e 10.128.0.0/14 to differentiate the VxLAN and GENEVE communication.
+**Note:** Use self IP range (10.142.2.60/12) which supernets the OpenShift cluster network i.e 10.128.0.0/14 to differentiate the VxLAN and GENEVE communication
 
-![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-39-20.png)
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster-ovn/diagram/2021-08-06_14-20-14.png)
 
-Diagram of all the BIG-IP self-ip addresses
+* **bigip-02**
+
+    (tmos)# create net self 10.142.4.61/12 allow-service all vlan openshift_vxlan
+
+**Note:** Use self IP range (10.142.4.61/12) which supernets the OpenShift cluster network i.e 10.128.0.0/14 to differentiate the VxLAN and GENEVE communication
+
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/cluster-ovn/diagram/2021-08-06_14-20-46.png)
+
+Diagram of all the BIG-IP self-ip addresses on the BIG-IP devices
+
+* **bigip-01**
+
+![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-40-06.png)
+
+* **bigip-02**
 
 ![diagram](https://github.com/mdditt2000/openshift-4-7/blob/master/standalone-ovn/diagram/2021-08-03_14-40-06.png)
 
