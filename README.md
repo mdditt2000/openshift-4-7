@@ -3,9 +3,5 @@ F5 Container Ingress Services (CIS) integrates with OpenShift to automate create
 
 ## About theses example / repo
 
-* Standalone BIGIP [document](https://github.com/mdditt2000/openshift-3-11/blob/master/enviroment/standalone/big-ip-83/QuickStartGuide.md)
-* High Availability BIGIP [document](https://github.com/mdditt2000/openshift-3-11/blob/master/enviroment/high-availability/bigip%20ha%20deployment/ha-deployment-guide.md)
-* AS3 Override Examples [document](https://github.com/mdditt2000/openshift-3-11/blob/master/examples/as3-override/QuickStartGuide.md)
-* OpenShift CIS FAQ [document](https://github.com/mdditt2000/openshift-3-11/blob/master/openshift-faq.md)
-
-Maintained by Mark Dittmer. Please contact me if you have any questions m.dittmer@f5.com
+* OpenShift 4.9 [document](https://github.com/mdditt2000/openshift-4-9#readme)
+* F5 Container Ingress Services User Guides and More [document](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/README.md)
